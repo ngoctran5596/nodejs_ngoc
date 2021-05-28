@@ -5,9 +5,12 @@ const exphbs = require('express-handlebars');
 const app = express();
 const port = 3000;
 const route = require('./routes');
+//import db
 const db = require('./config/db');
-
+//connnect to db
 db.connect();
+
+//public nhung file public
 app.use(express.static(path.join('src', 'public')));
 // console.log(__dirname,'public');
 //http loger
@@ -20,14 +23,18 @@ app.use(
 app.use(express.json());
 
 //template engine
-app.       engine(
+app.engine(
     'hbs',
     exphbs({
         extname: '.hbs',
+        helpers: {
+            foo: function () { return 'FOO!'; },
+            bar: function () { return 'BAR!'; }
+        }
     }),
 );
-              app.set('view engine', 'hbs');
-                app.set('views', path.join(__dirname, 'resources', 'views'));
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'resources', 'views'));
 // console.log(path.join(__dirname,'resources/views'));
 //routes khoi tao tuyen duong
 route(app);
