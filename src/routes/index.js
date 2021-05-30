@@ -3,6 +3,7 @@ const meRouter = require ('./me');
 const coursesRouter = require ('./courses');
 const sitesRouter = require ('./site.js');
 
+//tập hợp các đường dẫn sau khi mình ấn locohost 
 function route (app) {
   app.use ('/news', newsRouter);
   app.use ('/me', meRouter);
