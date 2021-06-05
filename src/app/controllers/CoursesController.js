@@ -17,7 +17,10 @@ class CoursesController {
   //[POST],/courses/store
   store(req, res) {
     const data = req.body
+    // Update later
     data.image = `https://img.youtube.com/vi/${req.body.videoId}/sddefault.jpg`
+    data.userId = '60bb295b1830b1b8db478bb3'
+    data.typeClassId = '60bb295b1830b1b8db478bb3'
     const course = new Courses(data)
     course
       .save()
