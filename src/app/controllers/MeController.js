@@ -1,4 +1,5 @@
 const Courses = require ('../models/Courses');
+const Users = require ('../models/User');
 const {mutipleMongooseToObject} = require ('../../util/mongoose');
 
 class MeController {
@@ -11,6 +12,13 @@ class MeController {
  
   }
  
+  userApp (req, res,next) {
+    Users.find({}).then((users)=>  res.render('me/stored-user',{
+      users: mutipleMongooseToObject(users)
+    }))
+    .catch(next);
+ 
+  }
 }
 
 module.exports = new MeController ();

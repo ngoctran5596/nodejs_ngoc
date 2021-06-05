@@ -1,45 +1,73 @@
 const User = require ('../models/User');
 const {mongooseToObject} = require ('../../util/mongoose');
 const sha256 = require ('js-sha256');
-const jwt = require('jwt-then');
+const jwt = require ('jwt-then');
 
 class UserController {
-  //[GET],/user/login
+  //[GET],/
+  dangky (req, res) {
+    res.render ('login-register', {layout: false});
+  }
+  login (req, res) {
+    res.render ('login', {layout: false});
+  }
+
+  //POST,/register
   register (req, res) {
     const {name, email, password, isTurtor, image} = req.body;
-    const emailRegex = /[@gmail.com|@yahoo.com]$/;
+    const emailRegex = /@gmail.com|@yahoo.com/;
     if (!emailRegex.test (email)) throw 'Khong ho tro domain';
 
     if (password.length < 6) throw 'Pass phai chua 6 ky tu';
 
-    if (isTurtor !== 'default' || isTurtor !== 'turtor')
-      throw 'chon user ban muon';
+    // if (isTurtor !== 'default' || isTurtor !== 'turtor')
+    //   throw 'chon user ban muon';
+
+    const userCheck = User.findOne ({
+      email,
+    });
+    if (userCheck) throw 'Email trùng';
+
     const user = new User ({
-      name, 
+      name,
       email,
       password: sha256 (password + process.env.SALT),
       isTurtor,
       image,
     });
-    user.save ();
-    res.json({
-      message: "user ["+ name +"] đăng ký thành công",
-    })
+    user.save ().then (() => res.redirect ('/home')).catch (err => {
+      console.log ('ERR', err);
+    });
+    // res.json ({
+    //   message: 'user [' + name + '] đăng ký thành công',
+    // });
   }
-  login (req, res) {
-    const {email,password} = req.body;
 
-    const user = User.findOne({
+  async loginStore (req, res) {
+    const {email, password} = req.body;
+
+    User.findOne ({
       email: email,
-      password:sha256(password+process.env.SALT)
-    })
-    if(!user) throw 'email hoặc mật khẩu không đúng'
-    
-    const token = jwt.sign({id:user.id},process.evn.SECRET);
-    res.json({
-      massage:'Đăng nhập thành công',
-      token
-    })
+      password: sha256 (password + process.env.SALT),
+    }).then (user => {
+      res.redirect('./home')
+    }).catch(next)
+
+    // const user = User.findOne ({
+    //   email: email,
+    //   password: sha256 (password + process.env.SALT),
+    // });
+    // if (!user) throw 'email hoặc mật khẩu không đúng';
+    // console.log('user',user)
+
+    // const token = await jwt.sign ({id: user.id}, process.env.SECRET);
+    // res.json (token);
+  }
+
+  delete (req, res, next) {
+    User.deleteOne ({_id: req.params.id})
+      .then (() => res.redirect ('back'))
+      .catch (next);
   }
 }
 

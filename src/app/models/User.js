@@ -9,7 +9,7 @@ const UserSchema = new Schema (
     email: {type: String,required: true},
     password: {type: String,required: true},
     image: {type: String},
-    isTurtor: { type: String,  required: true},
+    isTurtor: { type: String,},
   },
   {
     timestamps: true,
