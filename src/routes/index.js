@@ -4,8 +4,8 @@ const meRouter = require("./me");
 const coursesRouter = require("./courses");
 const sitesRouter = require("./site.js");
 const questionRouter = require("./question");
-const questionService = require("../app/services/QuestionService");
-const courseService = require("../app/services/CourseService")
+const questionApiRouter = require("../app/api/Question/router");
+const courseApiRouter = require("../app/api/Course/router")
 
 //tập hợp các đường dẫn sau khi mình ấn locohost
 function route(app) {
@@ -15,7 +15,9 @@ function route(app) {
   app.use("/courses", coursesRouter);
   app.use("/", sitesRouter);
   app.use("/question", questionRouter);
-  app.use("/api", questionService);
-  app.use("/api",courseService)
+
+  // api
+  app.use("/api", questionApiRouter);
+  app.use("/api",courseApiRouter)
 }
 module.exports = route;
