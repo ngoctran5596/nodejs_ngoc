@@ -17,7 +17,7 @@ function route(app) {
   app.use("/question", questionRouter);
 
   // api
-  app.use("/api", questionApiRouter);
-  app.use("/api",courseApiRouter)
+  app.use("/api/questions", questionApiRouter);
+  app.use("/api/courses",courseApiRouter)
 }
 module.exports = route;
