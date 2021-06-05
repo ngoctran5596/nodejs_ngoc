@@ -1,29 +1,29 @@
-const Courses = require ('../models/Courses');
+const Courses = require("../models/Courses")
 const {
   mutipleMongooseToObject,
   mongooseToObject,
-} = require ('../../util/mongoose');
+} = require("../../util/mongoose")
 
 class SitesController {
   //[GET], /
-  index (req, res, next) {
-    Courses.find ({})
-      .then (courses => {
+  index(req, res, next) {
+    Courses.find({})
+      .then((courses) => {
         //map qua de bien thang nay thanh object thuong con contructor no khong doc duoc
-        res.render ('home', {
-          courses: mutipleMongooseToObject (courses),
-        });
+        res.render("home", {
+          courses: mutipleMongooseToObject(courses),
+        })
       })
-      .catch (next);
+      .catch(next)
   }
 
   //[GET],/:slug
-  search (req, res) {
-    res.render ('search');
+  search(req, res) {
+    res.render("search")
   }
 }
 
-module.exports = new SitesController ();
+module.exports = new SitesController()
 
 //export thu gi thi nhan duoc thu do
 // const newController = require('./NewsController')
