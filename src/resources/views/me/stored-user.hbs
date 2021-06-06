@@ -1,35 +1,39 @@
-<div class='mt-4'>
-  <h3>Uer app</h3>
-  <table class='table mt-4'>
-    <thead>
-      <tr>
-        <th scope='col'>STT</th>
-        <th scope='col'>tên</th>
-        <th scope='col'>email</th>
-        <th scope='col'>pass</th>
-        <th scope='col'>image</th>
-        <th scope='col'>istourid</th>
-        <th scope='col'>timeCreate</th>
-        <th scope='col'>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each users}}
-        <tr>
-          <th scope='row'>{{sum @index 1}}</th>
-          <td>{{this.name}}</td>
-          <td>{{this.email}}</td>
-          <td>{{this.password}}</td>
-          <td>{{this.image}}</td>
-          <td>{{this.isTurtor}}</td>
-          <td>{{this.createdAt}}</td>
-          <td>
-            <a href="#" type='button'  class='btn btn-danger' data-bs-id="{{this._id}}"  data-bs-toggle="modal" data-bs-target="#deleteleModal">Delete</a></td>
-        </td> 
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
+<div class='container'>
+  <div class='row'>
+    <div class='table-responsive'>
+      <h3>Uer app</h3>
+      <table class='table table-bordered align-middle'>
+        <thead>
+          <tr>
+            <th scope='col'>STT</th>
+            <th scope='col'>Name</th>
+            <th scope='col'>Email</th>
+            <th scope='col'>Password</th>
+            <th scope='col'>Image</th>
+            <th scope='col'>isTutor</th>
+            <th scope='col'>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each users}}
+          <tr>
+            <th scope='row'>{{sum @index 1}}</th>
+            <td>{{this.name}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.password}}</td>
+            <td>{{this.image}}</td>
+            <td>{{this.isTurtor}}</td>
+            <td>
+              <a href="#" type='button' class='btn btn-danger' data-bs-id="{{this._id}}" data-bs-toggle="modal"
+                data-bs-target="#deleteleModal">Delete</a>
+            </td>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 {{!confirm delete courses---}}
@@ -41,7 +45,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-          Bạn muốn xóa  USer này?
+        Bạn muốn xóa USer này?
       </div>
       <div class="modal-footer">
         <button type="button" id="btn-delete-user" class="btn btn-primary">XÓA</button>
@@ -61,16 +65,16 @@
   deleteModal.addEventListener('show.bs.modal', function (event) {
     //show rồi thì lấy cái form ẩn ra
     const deleteForm = document.getElementById("DeleteForm");
-     // Button that triggered the modal
+    // Button that triggered the modal
     // thằng này của bootrap dùng lấy dữ liệu đã đưa vào  boostrap
     const button = event.relatedTarget;
-  // Extract info from data-bs-* attributes 
-     const id = button.getAttribute('data-bs-id');
-     alert(id);
-     const btnDeleteCourese = document.getElementById('btn-delete-user');
-     btnDeleteCourese.onclick = function(){
-       deleteForm.action = '/'+id+'?_method=DELETE';
-       deleteForm.submit();
+    // Extract info from data-bs-* attributes 
+    const id = button.getAttribute('data-bs-id');
+    alert(id);
+    const btnDeleteCourese = document.getElementById('btn-delete-user');
+    btnDeleteCourese.onclick = function () {
+      deleteForm.action = '/' + id + '?_method=DELETE';
+      deleteForm.submit();
     }
-})
+  })
 </script>

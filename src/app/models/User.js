@@ -9,7 +9,13 @@ const UserSchema = new Schema (
     email: {type: String,required: true},
     password: {type: String,required: true},
     image: {type: String},
-    isTurtor: { type: String,},
+    isTurtor: { type: String},
+    roles: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Role"
+      }
+    ]
   },
   {
     timestamps: true,

@@ -6,61 +6,58 @@ const jwt = require ('jwt-then');
 class UserController {
   //[GET],/
   dangky (req, res) {
-    res.render ('login-register', {layout: false});
+    res.render ('login-register-custom', {layout: false});
   }
   login (req, res) {
     res.render ('login', {layout: false});
   }
 
-  //POST,/register
-  register (req, res) {
+  //[POST],/register
+
+  async register (req, res, next) {
     const {name, email, password, isTurtor, image} = req.body;
     const emailRegex = /@gmail.com|@yahoo.com/;
-    if (!emailRegex.test (email)) throw 'Khong ho tro domain';
 
-    if (password.length < 6) throw 'Pass phai chua 6 ky tu';
+    if (!emailRegex.test (email)) res.json ({error: 'Khong ho tro domain'});
 
-    // if (isTurtor !== 'default' || isTurtor !== 'turtor')
-    //   throw 'chon user ban muon';
+    if (password.length < 6) res.json ({error: 'Pass chứa 6 ký tự'});
 
-    const userCheck = User.findOne ({
-      email,
+    const checkExits = await User.findOne ({
+      email: email,
     });
-    if (userCheck) throw 'Email trùng';
 
-    const user = new User ({
-      name,
-      email,
-      password: sha256 (password + process.env.SALT),
-      isTurtor,
-      image,
-    });
-    user.save ().then (() => res.redirect ('/home')).catch (err => {
-      console.log ('ERR', err);
-    });
-    // res.json ({
-    //   message: 'user [' + name + '] đăng ký thành công',
-    // });
+    if (checkExits) {
+      res.json ({error: 'Trùng Mail rồi bạn'});
+    } else {
+      const user = new User ({
+        name,
+        email,
+        password: sha256 (password + process.env.SALT),
+        isTurtor,
+        image,
+      });
+      user.save ().then (() => res.redirect ('/home')).catch (next);
+    }
   }
+
+
+  //[POST]/login
 
   async loginStore (req, res) {
     const {email, password} = req.body;
 
-    User.findOne ({
+    const user = await User.findOne ({
       email: email,
       password: sha256 (password + process.env.SALT),
-    }).then (user => {
-      res.redirect('./home')
-    }).catch(next)
-
-    // const user = User.findOne ({
-    //   email: email,
-    //   password: sha256 (password + process.env.SALT),
-    // });
-    // if (!user) throw 'email hoặc mật khẩu không đúng';
-    // console.log('user',user)
+    });
 
     // const token = await jwt.sign ({id: user.id}, process.env.SECRET);
+    if (!user) {
+      res.json ({error: 'Sai mail hoặc mật khẩu'});
+    } else {
+      res.redirect ('./home');
+    }
+
     // res.json (token);
   }
 

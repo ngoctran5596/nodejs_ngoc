@@ -36,10 +36,27 @@
 
                     <div class=''>
 
-                      <h2 class='text-center mb-5'>Login</h2>
+                    
+                      <div class='text-center mb-2'>
+                        <h2 style="margin-bottom: 20px;">Register</h2>
+                        <img src='https://image.flaticon.com/icons/png/512/747/747086.png' style="width: 100px;height:100px;margin-top:-20px" class='rounded' />
+                      </div>
 
-                      <form method='POST' action='/login'>
+                      <form method='POST' action='/register'>
                         <!-- 2 column grid layout with text inputs for the first and last names -->
+
+                        <div class='form-outline form-white mb-4'>
+                          <input
+                            type='text'
+                            id='name'
+                            class='form-control form-control-lg'
+                            name='name'
+                          />
+                          <label
+                            class='form-label'
+                            for='form3Example3'
+                          >Name</label>
+                        </div>
 
                         <!-- Email input -->
                         <div class='form-outline form-white mb-4'>
@@ -67,28 +84,41 @@
                           >Password</label>
 
                         </div>
+                        <div class='form-outline form-white mb-4'>
+                          <input
+                            type='text'
+                            id='image'
+                            name='image'
+                            class='form-control form-control-lg'
+                          />
+                          <label
+                            class='form-label'
+                            for='form3Example3'
+                          >Image</label>
+                        </div>
 
-            
+                        <select
+                          class='form-select mb-4'
+                          aria-label='Default select example'
+                          name='isTurtor'
+                        >
+                          <option value=''>---chon ---</option>
+                          <option value='nguoihoc'>Người học</option>
+                          <option value='nguoihuongdan'>Người hướng dẫn</option>
+                        </select>
+
+                        <!-- Checkbox -->
 
                         <!-- Submit button -->
-                        <div class="row">
-
-                          
-                        </div>
                         <button
                           type='submit'
                           class='btn btn-light btn-block mb-2'
-                        >Login</button>
-                        <a
-                          href='/logup'
-                          class='btn btn-light btn-block mb-4'
-                        >Register
+                        >Sign up</button>
+                        <a href='/' class='btn btn-light btn-block mb-2'>Log in
                         </a>
 
                         <!-- Register buttons -->
-                        <div class='text-center'>
-                         
-                        </div>
+
                       </form>
 
                     </div>
