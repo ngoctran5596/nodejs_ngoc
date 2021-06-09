@@ -4,6 +4,6 @@ exports.getAll = async function (req, res) {
   await Question.find({})
     .lean()
     .exec((err, data) => {
-      res.send(data)
+      res.json(data)
     })
 }

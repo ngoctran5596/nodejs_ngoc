@@ -1,15 +1,18 @@
-const jwt = require ('jwt-then');
+const jwt = require ('jsonwebtoken');
 
 module.exports = async (req, res, next) => {
+  const authHeader = req.header('Authorization');
+  
+  const token = authHeader && authHeader.split (' ')[1];
+
+  if(!token) return res.status(401).json({success:false,message:'Chưa có token'})
   try {
-    if (!req.headers.authorization) throw 'Bị cấm';
-    const token = req.headers.authorization.split ('')[1];
-    const payload = jwt.verify (token, process.env.SECRET);
-    req.payload = payload;
+    const payload = jwt.verify (token, process.env.ACCESS_TOKEN_SECRET);
+    req.userId = payload.userId;
     next ();
   } catch (error) {
       res.status(401).json({
-          message:"Bi cam"
+          message:"Token lởm"
       })
   }
 };

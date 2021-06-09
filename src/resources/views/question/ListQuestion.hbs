@@ -1,32 +1,43 @@
 <div class='container'>
   <div class='row'>
     <div class='table-responsive'>
-      <h3>Uer app</h3>
-      <table class='table table-bordered align-middle'>
+      <h3>Question app</h3>
+      <table class='table table-dark table-bordered table-striped'>
         <thead>
           <tr>
             <th scope='col'>STT</th>
-            <th scope='col'>Name</th>
-            <th scope='col'>Email</th>
-            <th scope='col'>Password</th>
-            <th scope='col'>Image</th>
-            <th scope='col'>isTutor</th>
-            <th scope='col'>Action</th>
+            <th scope='col'>Câu hỏi</th>
+            <th scope='col'>Câu trả lời 1</th>
+            <th scope='col'>Câu trả lời 2</th>
+            <th scope='col'>Câu trả lời 3</th>
+            <th scope='col'>Câu trả lời 4</th>
+            <th scope='col'>Đáp án đúng </th>
+            <th scope='col'>Action </th>
           </tr>
         </thead>
         <tbody>
-          {{#each users}}
+          {{#each listQuestion }}
           <tr>
             <th scope='row'>{{sum @index 1}}</th>
-            <td>{{this.name}}</td>
-            <td>{{this.email}}</td>
-            <td>{{this.password}}</td>
-            <td>{{this.image}}</td>
-            <td>{{this.isTurtor}}</td>
-            <td>
-              <a href="#" type='button' class='btn btn-danger' data-bs-id="{{this._id}}" data-bs-toggle="modal"
-                data-bs-target="#deleteleModal">Delete</a>
-            </td>
+            <td>{{this.title}}</td>
+            <td>{{this.option1}}</td>
+            <td>{{this.option2}}</td>
+            <td>{{this.option3}}</td>
+            <td>{{this.option4}}</td>
+            <td>Câu trả lời số {{this.trueOption}}</td>
+            <td><a
+                  type='button'
+                  href='/question/{{this._id}}/edit'
+                  class='btn btn-success'
+                >Update</a>
+                <a
+                  href='#'
+                  type='button'
+                  class='btn btn-danger'
+                  data-bs-id='{{this._id}}'
+                  data-bs-toggle='modal'
+                  data-bs-target='#deleteleModal'
+                >Delete</a></td>
             </td>
           </tr>
           {{/each}}
@@ -41,11 +52,11 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Xóa User</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Xóa Câu hỏi</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        Bạn muốn xóa USer này?
+        Bạn muốn xóa Câu hỏi này?
       </div>
       <div class="modal-footer">
         <button type="button" id="btn-delete-user" class="btn btn-primary">XÓA</button>
@@ -59,9 +70,7 @@
 
 <script>
   //lấy cái nút  thằng modal
-  
   const deleteModal = document.getElementById('deleteleModal');
-
   //add cho nó 1 cái sự kiện là show nó lên mặc định ẩn
   deleteModal.addEventListener('show.bs.modal', function (event) {
     //show rồi thì lấy cái form ẩn ra
@@ -71,10 +80,9 @@
     const button = event.relatedTarget;
     // Extract info from data-bs-* attributes 
     const id = button.getAttribute('data-bs-id');
-  
     const btnDeleteCourese = document.getElementById('btn-delete-user');
     btnDeleteCourese.onclick = function () {
-      deleteForm.action = '/' + id + '?_method=DELETE';
+      deleteForm.action = '/question/' + id + '?_method=DELETE';
       deleteForm.submit();
     }
   })

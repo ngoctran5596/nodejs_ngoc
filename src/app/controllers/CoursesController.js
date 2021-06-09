@@ -6,7 +6,8 @@ class CoursesController {
   show(req, res) {
     Courses.findOne({ slug: req.params.slug })
       .then((course) => {
-        res.render("courses/show", { course: mongooseToObject(course) })
+        console.log('course',course);
+        res.render("courses/show", { course: mongooseToObject(course) });
       })
       .catch((err) => next(err))
   }
@@ -24,7 +25,7 @@ class CoursesController {
     const course = new Courses(data)
     course
       .save()
-      .then(() => res.redirect("/"))
+      .then(() => res.redirect("/home"))
       .catch((err) => {
         console.log("ERR", err)
       })

@@ -83,11 +83,13 @@
 
 <script>
   const deleteModal = document.getElementById('deleteleModal');
-  deleteModal.addEventListener('show.bs.modal', function (event) { const
-  deleteForm = document.getElementById("DeleteForm"); // Button that triggered
-  the modal const button = event.relatedTarget; // Extract info from data-bs-*
-  attributes const id = button.getAttribute('data-bs-id'); const
-  btnDeleteCourese = document.getElementById('btn-delete-course');
-  btnDeleteCourese.onclick = function(){ deleteForm.action =
-  '/courses/'+id+'?_method=DELETE'; deleteForm.submit(); } })
+
+  deleteModal.addEventListener('show.bs.modal', function (event) { 
+    const deleteForm = document.getElementById("DeleteForm"); 
+  // Button that triggered
+     const button = event.relatedTarget; // Extract info from data-bs-*
+     const id = button.getAttribute('data-bs-id'); const
+     btnDeleteCourese = document.getElementById('btn-delete-course');
+       btnDeleteCourese.onclick = function(){
+       deleteForm.action = '/courses/'+id+'?_method=DELETE'; deleteForm.submit(); } })
 </script>

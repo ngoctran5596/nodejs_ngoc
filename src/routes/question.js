@@ -2,27 +2,13 @@ const express = require('express');
 const router = express.Router();
 const questionController = require('../app/controllers/QuestionController');
 
-const bodyparser = require('body-parser');
-let urlencodeParser = bodyparser.urlencoded({extended:false});
 
-router.get('/', (request, respon) => {
-    respon.render('authencations/Login');
-});
-
-
-router.get('/InsertQuestion', (request, respon) => {
-    respon.render('question/InsertQuestion');
-});
-// router.get('/ListQuestion', (request, respon) => {
-//     respon.render('ListQuestion');
-// });
+router.get('/', questionController.index);
+router.get('/create', questionController.create);
+router.post('/store', questionController.add);
+router.get('/:id/edit',questionController.edit);
+router.put('/:id',questionController.update);
+router.delete('/:id',questionController.delete);
 
 
-
-router.get('/ListQuestion', questionController.getAll);
-router.get('/api/allQuestions', questionController.getAll);
-
-router.post('/insertQuestion', urlencodeParser, questionController.insert);
-router.post('/updateQuestion', urlencodeParser, questionController.update);
-router.post('/deleteQuestion', urlencodeParser, questionController.delete);
 module.exports = router;
