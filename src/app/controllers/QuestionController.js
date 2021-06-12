@@ -6,7 +6,7 @@ class questionController {
   async  index(req, res, next) {
    await Question.find({})
       .then((listQuestion) => {
-        console.log('listQuestion',listQuestion)
+        // console.log('listQuestion',listQuestion)
         //map qua de bien thang nay thanh object thuong con contructor no khong doc duoc
         res.render("question/ListQuestion", {
           listQuestion: mutipleMongooseToObject(listQuestion),
