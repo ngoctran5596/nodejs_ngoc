@@ -5,8 +5,9 @@ const chatRoomRouter = require("./chatroom")
 const coursesRouter = require("./courses")
 const sitesRouter = require("./site.js")
 const questionRouter = require("./question")
-const postRouter = require("./post")
+const postRouter = require("./postApi")
 const userApi = require("./userApi")
+const courseType = require("./courseType")
 const questionApiRouter = require("../app/api/Question/router")
 const courseApiRouter = require("../app/api/Course/router")
 
@@ -16,6 +17,7 @@ function route(app) {
   // app.use("/user", userRouter);
   app.use("/", userRouter)
   app.use("/me", meRouter)
+  app.use("/courseType", courseType)
   app.use("/chat", chatRoomRouter)
   app.use("/courses", coursesRouter)
   app.use("/home", sitesRouter)

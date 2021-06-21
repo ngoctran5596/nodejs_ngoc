@@ -1,6 +1,7 @@
 const express = require ('express');
 const path = require ('path');
 const morgan = require ('morgan');
+const cors = require('cors');
 const exphbs = require ('express-handlebars');
 var methodOverride = require('method-override')
 const app = express ();
@@ -10,7 +11,7 @@ const route = require ('./routes');
 const db = require ('./config/db');
 //connnect to db
 db.connect ();
-
+app.use(cors());
 app.use(methodOverride('_method'))
 //public nhung file public
 app.use (express.static (path.join ('src', 'public')));
@@ -33,6 +34,7 @@ app.engine (
     //sử dụng function trong express handlerbar 
     helpers: {
       sum: (a, b) => a + b,
+      dateFormat: require('handlebars-dateformat'),
     },
   })
 );

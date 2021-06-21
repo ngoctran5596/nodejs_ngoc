@@ -6,7 +6,7 @@ const {json} = require ('express');
 class PostController {
   //[POST],/post/
   async create (req, res, next) {
-    const {title, description, image, videoId} = req.body;
+    const {title, description, image} = req.body;
     if (!title)
       return res
         .status (400)
@@ -17,7 +17,6 @@ class PostController {
         title,
         description,
         image,
-        videoId,
         userId: req.userId,
       });
       await newPost.save ();
@@ -37,10 +36,21 @@ class PostController {
       res.json ({error: error});
     }
   }
+
+    //[GET],/post/
+
+    async getAll (req, res, next) {
+      try {
+        const post = await Post.find ();
+        res.json ({success: true, post});
+      } catch (error) {
+        res.json ({error: error});
+      }
+    }
   //[PUT],/:id
 
   async update (req, res, next) {
-    const {title, description, image, videoId} = req.body;
+    const {title, description, image} = req.body;
 
     console.log (req.userId);
     if (!title)
@@ -53,7 +63,6 @@ class PostController {
         title,
         description,
         image,
-        videoId,
       };
       const postUpdateCondition = {_id: req.params.id, userId: req.userId};
       const updateNew = await Post.findOneAndUpdate (
@@ -69,6 +78,7 @@ class PostController {
     }
   }
 
+  //[DELETE],/:id
   async delete (req, res) {
     try {
       const postDeleteCondition = {_id: req.params.id, userId: req.userId};
