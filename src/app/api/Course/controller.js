@@ -7,6 +7,15 @@ exports.getAll = async function (req, res) {
   })
 }
 
+exports.getAllCourseType = async function (req, res) {
+  const payload = await Courses.find({
+    courseType:req.params.id
+  })
+  res.status(200).json({
+    payload,
+  })
+}
+
 exports.getById = async function (req, res) {
   try {
     const payload = await Courses.findById(req.params.id)

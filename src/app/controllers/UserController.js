@@ -92,7 +92,12 @@ class UserController {
           {userId: user._id},
           process.env.ACCESS_TOKEN_SECRET
         );
-        res.json ({success: true, message: 'success', accessToken});
+        const value ={
+          name:user.name,
+          email:user.email,
+          image:user.image
+        }
+        res.json ({success: true, message: 'success', accessToken,user:value});
       }
     } catch (error) {
       res.json ({success: false, message: 'Lỗi server'});
