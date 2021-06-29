@@ -33,6 +33,7 @@ exports.getAllPost = async function (req, res) {
       },
     ])
     .populate("userId", "name image")
+    .populate("typeClassId", "name")
   res.status(200).json({
     payload,
   })

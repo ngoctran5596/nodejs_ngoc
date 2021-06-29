@@ -25,8 +25,8 @@ function route(app) {
   app.use("/home", sitesRouter)
   app.use("/question", questionRouter)
   
-
   // api
+  // app.use('/api', require('./upload'))
   app.use("/api/post", postRouter)
   app.use("/api/user", userApi)
   app.use("/api/questions", questionApiRouter)

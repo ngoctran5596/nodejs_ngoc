@@ -1,6 +1,10 @@
+require('dotenv').config();
 const express = require ('express');
+
 const path = require ('path');
 const morgan = require ('morgan');
+const cookieParser = require('cookie-parser')
+const fileUpload = require('express-fileupload')
 const cors = require('cors');
 const exphbs = require ('express-handlebars');
 var methodOverride = require('method-override')
@@ -9,6 +13,10 @@ const port = 3000;
 const route = require ('./routes');
 //import db
 const db = require ('./config/db');
+app.use(cookieParser())
+app.use(fileUpload({
+    useTempFiles: true
+}))
 //connnect to db
 db.connect ();
 app.use(cors());

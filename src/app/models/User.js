@@ -1,14 +1,19 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 
-
 const UserSchema = new Schema (
   {
     name: {type: String},
     email: {type: String, required: true},
     password: {type: String, required: true},
-    image: {type: String},
-    isTurtor: {type: Boolean},
+    image: {
+      type: String,
+      default: 'https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png',
+    },
+    isTurtor: {
+      type: Number,
+      default: 0, // 0 = nguoi hoc, 1 = nguoi day
+    },
   },
   {
     timestamps: true,

@@ -1,4 +1,4 @@
-require("dotenv").config();
+
 const mongoose = require ('mongoose');
 
 
@@ -8,10 +8,10 @@ async function connect () {
      //cũ mongodb+srv://admin:nhom3qnqsh@cluster0.utcng.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
      //mới mongodb+srv://123:duantotnghiep@cluster0.ln0fs.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
     await mongoose.connect ('mongodb+srv://123:duantotnghiep@cluster0.ln0fs.mongodb.net/SuportStudy?retryWrites=true&w=majority', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
       useCreateIndex: true,
+      useFindAndModify: false,
+      useNewUrlParser: true,
+      useUnifiedTopology: true
     });
     console.log('Connect successfuly!');
   } catch (error) {
