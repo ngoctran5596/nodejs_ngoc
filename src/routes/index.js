@@ -12,6 +12,7 @@ const questionApiRouter = require("../app/api/Question/router")
 const courseApiRouter = require("../app/api/Course/router")
 const courseTypeApiRouter = require("../app/api/CourseType/router")
 const newsFeedApiRouter = require("../app/api/Newsfeed/router")
+const GroupApiRouter = require("../app/api/Group/router")
 
 //tập hợp các đường dẫn sau khi mình ấn locohost
 function route(app) {
@@ -33,5 +34,6 @@ function route(app) {
   app.use("/api/courses", courseApiRouter)
   app.use("/api/courseType", courseTypeApiRouter)
   app.use("/api/newsfeed",newsFeedApiRouter)
+  app.use(GroupApiRouter)
 }
 module.exports = route
