@@ -37,7 +37,7 @@ const userCtrl = {
             const activation_token = createActivationToken(newUser)
 
             const url = `${CLIENT_URL}/user/activate/${activation_token}`
-            sendMail(email, url, "Verify your email address")
+            sendMail(email, url)
             res.json({msg: "Register Success! Please activate your email to start."})
         } catch (err) {
             return res.status(500).json({msg: err.message})
@@ -45,6 +45,7 @@ const userCtrl = {
     },
     activateEmail: async (req, res) => {
         try {
+            console.log('req.bodyreq.bodyreq.bodyreq.body',req.body)
             const {activation_token} = req.body
             const user = jwt.verify(activation_token, process.env.ACTIVATION_TOKEN_SECRET)
 
@@ -74,14 +75,21 @@ const userCtrl = {
             const isMatch = await bcrypt.compare(password, user.password)
             if(!isMatch) return res.status(400).json({msg: "Password is incorrect."})
 
-            const refresh_token = createRefreshToken({id: user._id})
-            res.cookie('refreshtoken', refresh_token, {
-                httpOnly: true,
-                path: '/user/refresh_token',
-                maxAge: 7*24*60*60*1000 // 7 days
-            })
-
-            res.json({msg: "Login success!"})
+            const accessToken = jwt.sign (
+                {userId: user._id},
+                process.env.ACCESS_TOKEN_SECRET
+              );
+              const value = {
+                name: user.name,
+                email: user.email,
+                image: user.image,
+              };
+              res.json ({
+                success: true,
+                message: 'success',
+                accessToken,
+                user: value,
+              });
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
