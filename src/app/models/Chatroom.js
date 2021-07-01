@@ -1,11 +1,14 @@
-const mongoose = require ('mongoose');
-const Schema = mongoose.Schema;
-const slug = require('mongoose-slug-generator');
-mongoose.plugin(slug)
+const mongoose = require('mongoose');
 
-const ChatroomSchema = new Schema (
-  {
-    name: {type: String},
-  }
-);
-module.exports = mongoose.model ('Chatroom', ChatroomSchema);
+const chatSchema = new mongoose.Schema({
+  message: String,
+  created_at: Date,
+  user_post: Object,
+  user_id: String,
+  room_id: String,
+  is_seen: Boolean
+});
+
+const Chat = mongoose.model('Chat', chatSchema);
+
+module.exports = Chat;

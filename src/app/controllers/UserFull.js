@@ -12,7 +12,7 @@ const client = new OAuth2(process.env.MAILING_SERVICE_CLIENT_ID)
 const {CLIENT_URL} = process.env
 
 const userCtrl = {
-    register: async (req, res,txt) => {
+    register: async (req, res) => {
         try {
             const {name, email, password} = req.body
             
