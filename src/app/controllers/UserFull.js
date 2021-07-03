@@ -83,6 +83,7 @@ const userCtrl = {
                 name: user.name,
                 email: user.email,
                 image: user.image,
+                isTutor: user.isTutor,
               };
               res.json ({
                 success: true,
