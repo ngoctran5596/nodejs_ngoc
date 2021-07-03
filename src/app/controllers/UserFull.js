@@ -43,9 +43,15 @@ const userCtrl = {
             return res.status(500).json({msg: err.message})
         }
     },
+    show: async (req, res)=> {
+        console.log(req.params);
+        
+        res.render ('email/confirm', {layout: false,acessToken:req.params});
+      }
+    ,
     activateEmail: async (req, res) => {
         try {
-            console.log('req.bodyreq.bodyreq.bodyreq.body',req.body)
+            console.log('req.bodyreq.bodyreq.bodyreq.body',req)
             const {activation_token} = req.body
             const user = jwt.verify(activation_token, process.env.ACTIVATION_TOKEN_SECRET)
 

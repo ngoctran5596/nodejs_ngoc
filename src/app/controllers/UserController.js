@@ -15,6 +15,7 @@ class UserController {
     res.render ('login-register-custom', {layout: false});
   }
   login (req, res) {
+   
     res.render ('login', {layout: false});
   }
 

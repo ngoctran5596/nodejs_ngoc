@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>xác nhận mail</title>
+</head>
+<body>
+  <div class='mt-4'>
+  <h3>Xác nhận mail</h3>
+  <form method='POST' action='/api/user/activation'>
+     <input
+        type='text'
+         width="48" 
+         height="48"
+        class='form-control'
+        id='activation_token'
+        name='activation_token'
+        value={{acessToken.id}}
+        readonly
+      />
+    <button type='submit' class='btn btn-primary'>Xác nhận</button>
+  </form>
+</div>
+</body>
+</html>
+
+
+
