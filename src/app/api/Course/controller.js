@@ -13,11 +13,7 @@ exports.getAllCourseType = async function (req, res) {
   const payload = await Courses.find ({
     courseType: req.params.id
   });
-  if (payload.length === 0)
-    return res
-      .status (400)
-      .json ({message: 'Không tìm thấy lớp học nào của khóa học này', success: false});
-  return res.status (200).json ({
+  res.status (200).json ({
     payload,
   });
 };
