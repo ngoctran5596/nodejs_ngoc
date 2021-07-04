@@ -10,7 +10,7 @@ const Course = new Schema(
     image: { type: String },
     videoId: { type: String, required: true },
     userId: { type: mongoose.Schema.Types.ObjectId, required: true },
-    typeClassId: { type: mongoose.Schema.Types.ObjectId, required: true },
+    courseType: { type: mongoose.Schema.Types.ObjectId, required: true },
     slug: { type: String, slug: "name", unique: true },
     level: { type: String },
   },

@@ -44,8 +44,7 @@ const userCtrl = {
         }
     },
     show: async (req, res)=> {
-        console.log(req.params);
-        
+        console.log(req.params);      
         res.render ('email/confirm', {layout: false,acessToken:req.params});
       }
     ,
@@ -136,11 +135,9 @@ const userCtrl = {
             const {password} = req.body
             console.log(password)
             const passwordHash = await bcrypt.hash(password, 12)
-
             await Users.findOneAndUpdate({_id: req.user.id}, {
                 password: passwordHash
             })
-
             res.json({msg: "Password successfully changed!"})
         } catch (err) {
             return res.status(500).json({msg: err.message})
@@ -149,7 +146,6 @@ const userCtrl = {
     getUserInfor: async (req, res) => {
         try {
             const user = await Users.findById(req.user.id).select('-password')
-
             res.json(user)
         } catch (err) {
             return res.status(500).json({msg: err.message})
@@ -158,7 +154,6 @@ const userCtrl = {
     getUsersAllInfor: async (req, res) => {
         try {
             const users = await Users.find().select('-password')
-
             res.json(users)
         } catch (err) {
             return res.status(500).json({msg: err.message})
