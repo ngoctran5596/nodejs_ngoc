@@ -85,10 +85,11 @@ const userCtrl = {
                 process.env.ACCESS_TOKEN_SECRET
               );
               const value = {
+                id:user._id,
                 name: user.name,
                 email: user.email,
                 image: user.image,
-                isTutor: user.isTutor,
+                isTurtor: user.isTurtor,
               };
               res.json ({
                 success: true,
