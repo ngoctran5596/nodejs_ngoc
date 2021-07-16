@@ -5,10 +5,10 @@ mongoose.plugin(slug)
 
 const MessageSchema = new Schema (
   {
-    chatroom:{
+    group:{
       type:mongoose.Schema.Types.ObjectId,
       require :"Chatroom is required",
-      ref:"Chatroom" ,
+      ref:"Group" ,
     },
     user:{
       type:mongoose.Schema.Types.ObjectId,

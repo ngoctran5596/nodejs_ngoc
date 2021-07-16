@@ -6,18 +6,17 @@ const {json} = require ('express');
 class PostController {
   //[POST],/post/
   async create (req, res, next) {
-    const {title, description, image} = req.body;
-    if (!title)
+    const { description, image,userId} = req.body;
+    if (!description)
       return res
         .status (400)
-        .json ({success: false, message: 'title để trống'});
+        .json ({success: false, message: 'description không để trống'});
 
     try {
       const newPost = new Post ({
-        title,
         description,
         image,
-        userId: req.userId,
+        userId,
       });
       await newPost.save ();
       res.json ({success: true, message: 'Happy learning'});

@@ -1,4 +1,5 @@
 const Chat = require('../models/Chatroom');
+const User = require('../models/User')
 
 module.exports.index = async (req, res) => {
   try {
@@ -41,3 +42,4 @@ module.exports.deleteAll = async (req, res) => {
     });
   }
 }
+

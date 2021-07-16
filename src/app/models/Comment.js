@@ -7,6 +7,7 @@ const Comment = new Schema(
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     // typeClassId: { type: mongoose.Schema.Types.ObjectId, required: true },
   },
+
   {
     timestamps: true,
   }

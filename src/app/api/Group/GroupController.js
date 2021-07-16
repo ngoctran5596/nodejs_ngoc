@@ -1,4 +1,5 @@
-var Group = require("../../models/Group");
+const Group = require("../../models/Group");
+const Patian = require("../../models/Participant");
 fs = require('fs-extra')
 
 exports.createGroupWithImage = function (req, res)  {
@@ -40,12 +41,18 @@ exports.insertGroup = async (req, respon) => {
     });
 };
 exports.getAll = async function (req, res) {
-    await Group.find({})
-        .lean()
-        .exec((err, data) => {
-            res.json(data)
-        })
-}
+  const payload = await Group.find ().populate('participant');
+  res.status (200).json ({
+    payload,
+  });
+};
+exports.getAllPatian = async function (req, res) {
+  const payload = await Patian.find ()
+  res.status (200).json ({
+    payload,
+  });
+};
+
 
 exports.findGroupId = (req, res) => {
 	Group.find({ _id: req.body._id})

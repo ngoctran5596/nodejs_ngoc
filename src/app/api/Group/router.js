@@ -17,6 +17,7 @@ var upload = multer({ storage: storage })
 
 router
   .get("/api/getAllGroup", controller.getAll)
+  .get("/api/getAllPatian", controller.getAllPatian)
   .post("/api/insertGroup", controller.insertGroup)
   .post("/api/findGroupId", controller.findGroupId)
   .post("/api/deleteGroup", controller.deleteGroup)
