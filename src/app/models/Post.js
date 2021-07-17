@@ -9,6 +9,7 @@ const Post = new Schema(
     image: { type: String },
     userId: { type: mongoose.Schema.Types.ObjectId, ref:"User"  },
     comment: [{type: mongoose.Schema.Types.ObjectId,ref:"Comment"}],
+    like: [{type: mongoose.Schema.Types.ObjectId,ref:"Like"}],
     typeClassId: { type: mongoose.Schema.Types.ObjectId, ref:"CourseType"},
   },
   {

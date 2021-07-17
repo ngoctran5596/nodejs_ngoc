@@ -1,4 +1,5 @@
 const Comment = require ('../../models/Comment');
+const Like = require ('../../models/Like');
 const Post = require ('../../models/Post');
 const postController = require ('../../controllers/PostController');
 exports.addComment = async function (req, res) {
@@ -18,6 +19,35 @@ exports.addComment = async function (req, res) {
   }
 };
 
+exports.like = async function (req, res) {
+  try {
+    const {like, userId} = req.body;
+    const {id} = req.params;
+    
+    Like.find ({userId, postId: id})
+      .then (liked => {
+        if (liked.length > 0 ) {
+          return Like.findByIdAndUpdate ({_id: liked[0]._id}, {like});
+        }else{
+          const likeCheck = new Like ({like, userId,postId: id});
+          const payload = likeCheck
+            .save ()
+            .then (() => Post.findById (id))
+            .then (post => {
+              post.like.unshift (likeCheck);
+              return post.save ();
+            });
+         return payload
+        }   
+      })
+      .then (data => res.json (data));
+
+   
+  } catch (error) {
+    console.log ('ERR', error);
+  }
+};
+
 exports.getAllPost = async function (req, res) {
   const payload = await Post.find ()
     .populate ([
@@ -25,6 +55,18 @@ exports.getAllPost = async function (req, res) {
         path: 'comment',
         model: 'Comment',
         select: 'content',
+        populate: {
+          path: 'userId',
+          model: 'User',
+          select: 'name image',
+        },
+      },
+    ])
+    .populate ([
+      {
+        path: 'like',
+        model: 'Like',
+        select: 'like',
         populate: {
           path: 'userId',
           model: 'User',
