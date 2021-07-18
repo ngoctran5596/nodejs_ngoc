@@ -66,7 +66,7 @@ exports.getAllPost = async function (req, res) {
       {
         path: 'like',
         model: 'Like',
-        select: 'like',
+        select: 'like postId',
         populate: {
           path: 'userId',
           model: 'User',

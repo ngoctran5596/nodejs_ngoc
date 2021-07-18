@@ -37,7 +37,7 @@ const userCtrl = {
             const activation_token = createActivationToken(newUser)
 
             const url = `${CLIENT_URL}/api/user/${activation_token}`
-            sendMail(email, url)
+            sendMail(email, url,'Xác nhận email')
             res.json({msg: "Register Success! Please activate your email to start."})
         } catch (err) {
             return res.status(500).json({msg: err.message})
@@ -46,6 +46,11 @@ const userCtrl = {
     show: async (req, res)=> {
         console.log(req.params);      
         res.render ('email/confirm', {layout: false,acessToken:req.params});
+      }
+    ,
+    resetWeb: async (req, res)=> {
+        console.log(req.params);      
+        res.render ('email/resetPass', {layout: false,acessToken:req.params});
       }
     ,
     activateEmail: async (req, res) => {
@@ -123,9 +128,9 @@ const userCtrl = {
             if(!user) return res.status(400).json({msg: "This email does not exist."})
 
             const access_token = createAccessToken({id: user._id})
-            const url = `${CLIENT_URL}/user/reset/${access_token}`
+            const url = `${CLIENT_URL}/api/user/reset/resetWeb/${access_token}`
 
-            sendMail(email, url, "Reset your password")
+            sendMail(email, url,'Reset Mật Khẩu');
             res.json({msg: "Re-send the password, please check your email."})
         } catch (err) {
             return res.status(500).json({msg: err.message})

@@ -11,8 +11,8 @@ const UserSchema = new Schema (
       default: 'https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png',
     },
     isTurtor: {
-      type: Number,
-      default: 0, // 0 = nguoi hoc, 1 = nguoi day
+      type: Boolean,
+      default: false, // 0 = nguoi hoc, 1 = nguoi day
     },
   },
   {
