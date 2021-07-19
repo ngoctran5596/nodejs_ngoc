@@ -28,7 +28,7 @@
       <form id="myForm" method="POST" action="/api/user/reset">
         <div class="mb-3">
           <label for="description" class="form-label">Mật Khẩu mới</label>
-          <input id="acesstoken"class="form-control"  type="text" value="{{acessToken.id}}">
+          <input id="acesstoken"class="form-control"  type="text" value="{{acessToken.id}}" readonly>
           <input type="text" class="form-control" id="password" name="password" />
         </div>
 
@@ -63,8 +63,7 @@
 
         // Set up our request
         XHR.open("POST", "http://localhost:3000/api/user/reset",true);
-        XHR.setRequestHeader('Authorization', 'Bearer ' + accessToken.value);
-        // The data sent is what the user provided in the form
+        XHR.setRequestHeader('Authorization',accessToken.value);
         XHR.send(FD);
       }
 

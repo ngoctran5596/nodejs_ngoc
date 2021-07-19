@@ -144,7 +144,7 @@ const userCtrl = {
             await Users.findOneAndUpdate({_id: req.user.id}, {
                 password: passwordHash
             })
-            res.json({msg: "Password successfully changed!"})
+            res.json({msg: "Reset Password Thành Công"});
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
