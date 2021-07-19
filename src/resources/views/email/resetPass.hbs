@@ -47,10 +47,8 @@
       function sendData() {
         const XHR = new XMLHttpRequest();
         const accessToken = document.getElementById('acesstoken');
-        console.log('accessTokenaccessTokenaccessTokenaccessTokenaccessToken', accessToken);
-        
+        console.log('accessTokenaccessTokenaccessTokenaccessTokenaccessToken', accessToken.value);
         const FD = new FormData(form);
-
         // Define what happens on successful data submission
         XHR.addEventListener("load", function (event) {
           alert(event.target.responseText);
@@ -62,7 +60,7 @@
         });
 
         // Set up our request
-        XHR.open("POST", "http://localhost:3000/api/user/reset",true);
+        XHR.open("POST", "https://duan-3.glitch.me/api/user/reset",true);
         XHR.setRequestHeader('Authorization',accessToken.value);
         XHR.send(FD);
       }
