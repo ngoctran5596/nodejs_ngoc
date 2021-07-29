@@ -7,5 +7,5 @@ router
   .get("/:id", controller.getById)
   .post("/:id", controller.addComment)
   .post("/like/:id", controller.like)
-  .post("/", controller.createPost)
+  .post("/create/created", controller.createPost)
 module.exports = router //exporst qua index.js để su dung

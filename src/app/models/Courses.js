@@ -7,7 +7,7 @@ const Course = new Schema(
   {
     name: { type: String, required: true },
     description: { type: String },
-    image: { type: String },
+    image: { type: String ,required: true},
     videoId: { type: String, required: true },
     userId: { type: mongoose.Schema.Types.ObjectId, required: true },
     courseType: { type: mongoose.Schema.Types.ObjectId, required: true },

@@ -6,7 +6,10 @@ mongoose.plugin(slug);
 const Post = new Schema(
   {
     description: { type: String },
-    image: { type: String },
+    image: {
+      type: String,
+      default: '',
+    },
     userId: { type: mongoose.Schema.Types.ObjectId, ref:"User"  },
     comment: [{type: mongoose.Schema.Types.ObjectId,ref:"Comment"}],
     like: [{type: mongoose.Schema.Types.ObjectId,ref:"Like"}],
