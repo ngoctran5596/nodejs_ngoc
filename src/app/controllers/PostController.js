@@ -1,4 +1,3 @@
-const Courses = require ('../models/Courses');
 const Post = require ('../models/Post');
 const {mutipleMongooseToObject} = require ('../../util/mongoose');
 const {json} = require ('express');
@@ -6,23 +5,19 @@ const {json} = require ('express');
 class PostController {
   //[POST],/post/
   async create (req, res, next) {
-    const { description, image,userId} = req.body;
-    if (!description)
-      return res
-        .status (400)
-        .json ({success: false, message: 'description không để trống'});
-
-    try {
-      const newPost = new Post ({
+    console.log("req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body",req.body);
+    console.log("req.file.file.file.file.file.body",req);
+      const {description,userId} = req.body;
+      const image =process.env.NEWFEED_URL+ req.file.filename;
+      const postNew =  new Post({
         description,
-        image,
         userId,
-      });
-      await newPost.save ();
-      res.json ({success: true, message: 'Happy learning'});
-    } catch (error) {
-      res.json ({error: error});
-    }
+        image
+      })
+      postNew.save().then((data) => res.json(data))
+      .catch((err) => {
+        console.log("ERR", err)
+      })
   }
   //[GET],/post/
 
@@ -85,6 +80,13 @@ class PostController {
       if (!deleteOne)
         return res.json ({success: false, message: 'delete Fail'});
       res.json ({success: true, message: 'delete thanh cong'});
+    } catch (error) {
+      res.json ({message: error});
+    }
+  }
+  async adminCreate (req, res) {
+    try {
+      res.render ('posts/create');
     } catch (error) {
       res.json ({message: error});
     }
