@@ -1,14 +1,17 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const chatSchema = new mongoose.Schema({
-  message: String,
-  created_at: Date,
-  user_post: Object,
-  user_id: String,
-  room_id: String,
-  is_seen: Boolean
-});
+const chatSchema = new mongoose.Schema(
+  {
+    romId: { type: String, require: true },
+    senderEmail: { type: String, require: true },
+    reciverEmail: { type: String, require: true },
+    txtMsg: { type: String, require: true },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const Chat = mongoose.model('Chat', chatSchema);
+const Chat = mongoose.model("Chat", chatSchema);
 
 module.exports = Chat;
