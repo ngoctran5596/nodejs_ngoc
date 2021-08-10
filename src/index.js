@@ -123,4 +123,6 @@ app.set("views", path.join(__dirname, "resources", "views"));
 //routes khoi tao tuyen duong
 route(app);
 
-server.listen(port, () => {});
+server.listen(port, () => {
+  console.log(`http://localhost:3000`)
+});
