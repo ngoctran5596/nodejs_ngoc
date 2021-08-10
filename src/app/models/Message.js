@@ -1,24 +1,22 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
-const slug = require('mongoose-slug-generator');
-mongoose.plugin(slug)
+
 
 const MessageSchema = new Schema (
   {
-    group:{
-      type:mongoose.Schema.Types.ObjectId,
-      require :"Chatroom is required",
-      ref:"Group" ,
+    roomID:{
+     type:String, required:true
     },
-    user:{
-      type:mongoose.Schema.Types.ObjectId,
-      require :"Chatroom is required",
-      ref:"User" ,
+    senderEmail:{
+      type:String, required:true
     },
-    message:{
-      type:String,
-      require :"Message is required",
-    }
+    recieverEmail:{
+      type:String, required:true
+    },
+    txtMsg:{
+      type:String, required:true
+    },
+    time:{type:String,default:Date.now},
   }
 );
-module.exports = mongoose.model ('Message', MessageSchema);
+module.exports = Messages = mongoose.model ('messages', MessageSchema);

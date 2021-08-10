@@ -11,6 +11,9 @@ const conectIo = require("./app/controllers/socket");
 const postController = require('./app/controllers/PostController');
 const auth = require('./middlewares/auth');
 var methodOverride = require("method-override");
+const User = require("./app/models/User");
+const {addUser,loadMessage,saveMsg} = require("./app/helpers/mics");
+const Messages = require("./app/models/Message");
 const app = express();
 
 const port = 3000;
@@ -62,7 +65,46 @@ app.use(
 );
 app.use(express.json());
 
-conectIo.conect(io);
+// conectIo.conect(io);
+io.on("connection", async (socket) => {
+  console.log('user connect');
+  // get user
+  socket.on("getUsers", async () => {
+    User.find({},(err, users) => {
+      io.emit("getAllUser", users);
+    }).select('-password');
+
+  
+    loadMessage(socket);
+
+    socket.on(
+      "startUniqueChat",
+      ({recieverEmail,senderEmail,recieverID},callback)=>{
+        addUser({recieverEmail,senderEmail,recieverID},socket);
+      }
+    );
+
+    socket.on('joinTwoUsers',({roomID},cb)=>{
+      socket.join(roomID);
+      cb({roomID});
+    });
+
+    
+  
+  });
+  socket.on('sendTouser',(data)=>{
+    console.log('DATATAT',data);
+    socket.broadcast.to(data.roomID).emit('dispatchMsg',{...data});
+    const {
+      roomID,
+      senderEmail,
+      recieverEmail,
+      composeMsg :{ time, txtMsg},
+    } = data;
+
+     new Messages({roomID,senderEmail,recieverEmail,time,txtMsg}).save();
+  });
+});
 //template engine
 app.engine(
   "hbs",

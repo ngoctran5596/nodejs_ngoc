@@ -1,4 +1,4 @@
-const Chatroom = require ('../models/Chatroom');
+const Chatroom = require ('../models/Chats');
 const {mongooseToObject} = require ('../../util/mongoose');
 
 class ChatRoomController {

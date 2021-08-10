@@ -1,4 +1,4 @@
-const Chat = require('../models/Chatroom');
+const Chat = require('../models/Chats');
 const User = require('../models/User')
 
 module.exports.index = async (req, res) => {
