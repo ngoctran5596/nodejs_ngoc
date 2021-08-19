@@ -45,15 +45,15 @@ app.use (
     useTempFiles: true,
   })
 );
+
 //connnect to db
 db.connect ();
 app.use (methodOverride ('_method'));
+
 //public nhung file public
 app.use (express.static (path.join ('src', 'public')));
 app.use (express.static (path.join ('src', 'resources/assets')));
-// console.log(__dirname,'public');
-//http loger
-// app.use (morgan ());
+
 app.use (
   express.urlencoded ({
     extended: true,
