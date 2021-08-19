@@ -16,7 +16,7 @@ const {addUser, loadMessage, saveMsg} = require ('./app/helpers/mics');
 const Messages = require ('./app/models/Message');
 const app = express ();
 
-const port =  process.env.PORT || 3000;
+const PORT =  process.env.PORT || 3000;
 var bodyParser = require ('body-parser');
 app.use (bodyParser.urlencoded ({extended: false}));
 
@@ -120,6 +120,6 @@ app.set ('views', path.join (__dirname, 'resources', 'views'));
 //routes khoi tao tuyen duong
 route (app);
 
-server.listen (port, () => {
-  console.log (`http://localhost:3000`);
+server.listen (PORT, function(){
+  console.log("Express server listening on port %d in %s mode", app.settings.env);
 });
