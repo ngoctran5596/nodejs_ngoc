@@ -16,7 +16,7 @@ const {addUser, loadMessage, saveMsg} = require ('./app/helpers/mics');
 const Messages = require ('./app/models/Message');
 const app = express ();
 
-const port = 3000;
+const port =  process.env.PORT || 3000;
 var bodyParser = require ('body-parser');
 app.use (bodyParser.urlencoded ({extended: false}));
 
