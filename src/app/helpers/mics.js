@@ -43,16 +43,11 @@ const addUser = ({ recieverEmail, senderEmail }, socket) => {
 };
 
 const loadMessage =(socket)=>{
-    socket.on("sentMsgs",({myEmail},cb)=>{
-        Messages.find({senderEmail:myEmail}).then((msgs)=>{
+    socket.on("sentMsgs",({roomID},cb)=>{
+        Messages.find({roomID:roomID}).then((msgs)=>{
+            console.log(msgs);
             if(!msgs) return cb(null);
-            cb(msgs);
-        });
-    });
-    socket.on("recievedMsgs",({myEmail},cb)=>{
-        Messages.find({senderEmail:myEmail}).then((msgs)=>{
-            if(!msgs) return cb(null);
-            cb(msgs);
+            return cb(msgs);
         });
     });
 }

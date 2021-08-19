@@ -73,21 +73,21 @@ io.on ('connection', async socket => {
     User.find ({}, (err, users) => {
       io.emit ('getAllUser', users);
     }).select ('-password');
-
-    loadMessage (socket);
-
-    socket.on (
-      'startUniqueChat',
-      ({recieverEmail, senderEmail, recieverID}, callback) => {
-        addUser ({recieverEmail, senderEmail, recieverID}, socket);
-      }
-    );
-
-    socket.on ('joinTwoUsers', ({roomID}, cb) => {
-      socket.join (roomID);
-      cb ({roomID});
-    });
   });
+
+  socket.on (
+    'startUniqueChat',
+    ({recieverEmail, senderEmail, recieverID}, callback) => {
+      addUser ({recieverEmail, senderEmail, recieverID}, socket);
+    }
+  );
+
+  socket.on ('joinTwoUsers', ({roomID}, cb) => {
+    socket.join (roomID);
+    cb ({roomID});
+  });
+
+  loadMessage (socket);
 
   socket.on ('sendTouser', data => {
     console.log ('DATATAT', data);

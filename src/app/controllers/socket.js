@@ -12,7 +12,7 @@ module.exports.conect = (io) => {
       }).select('-password');
 
     
-      loadMessage(socket);
+     
 
       socket.on(
         "startUniqueChat",
