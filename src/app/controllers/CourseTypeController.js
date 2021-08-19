@@ -45,6 +45,7 @@ class CourseTypeController {
   }
   //[DELETE],/courses/:id
   delete (req, res, next) {
+    console.log(' req.params.id', req.params.id)
     CourseType.deleteOne ({_id: req.params.id})
       .then (() => res.redirect ('back'))
       .catch (next);
