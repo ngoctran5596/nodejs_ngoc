@@ -120,6 +120,6 @@ app.set ('views', path.join (__dirname, 'resources', 'views'));
 //routes khoi tao tuyen duong
 route (app);
 
-server.listen (PORT, function(){
-  console.log("Express server listening on port %d in %s mode", app.settings.env);
+server.listen ((process.env.PORT || 3000), function(){
+  console.log("Express server listening on port %d in %s mode");
 });
