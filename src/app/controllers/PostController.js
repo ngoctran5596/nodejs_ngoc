@@ -8,16 +8,28 @@ class PostController {
     console.log("req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body",req.body);
     console.log("req.file.file.file.file.file.body",req);
       const {description,userId} = req.body;
-      const image =process.env.NEWFEED_URL+ req.file.filename;
-      const postNew =  new Post({
-        description,
-        userId,
-        image
-      })
-      postNew.save().then((data) => res.json(data))
-      .catch((err) => {
-        console.log("ERR", err)
-      })
+
+      if(req.file.filename){
+        const image =process.env.NEWFEED_URL+ req.file.filename;
+        const postNew =  new Post({
+          description,
+          userId,
+          image
+        });
+        postNew.save().then((data) => res.json(data))
+        .catch((err) => {
+          res.json(err);
+        })
+      }else{
+        const postNew =  new Post({
+          description,
+          userId,
+        });
+        postNew.save().then((data) => res.json(data)) .catch((err) => {
+          res.json(err);
+        })                                                                                                             
+      }
+      
   }
   //[GET],/post/
 

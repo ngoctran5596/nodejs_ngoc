@@ -29,6 +29,7 @@ var storage = multer.diskStorage ({
 });
 var upload = multer ({storage: storage});
 app.post ('/postImage', upload.single ('imagePost'), postController.create);
+// app.post ('/postNoImage/app', upload.single ('imagePost'), postController.create);
 //import db
 const server = http.createServer (app);
 const {Server} = require ('socket.io');
