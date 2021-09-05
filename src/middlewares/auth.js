@@ -5,7 +5,7 @@ module.exports = async (req, res, next) => {
     const token = req.header ('Authorization');
     if (!token) return res.status (400).json ({msg: 'Chưa có token.'});
 
-    jwt.verify (token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    jwt.verify (token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
       if (err) return res.status (400).json ({msg: 'Khong có user.'});
       req.user = user;
       next ();

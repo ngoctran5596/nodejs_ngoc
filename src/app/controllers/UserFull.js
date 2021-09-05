@@ -13,7 +13,7 @@ const {CLIENT_URL} = process.env
 const userCtrl = {
     register: async (req, res) => {
         try {
-            const {name, email, password} = req.body
+            const {name, email, password,isTutor} = req.body
             
             if(!name || !email || !password)
                 return res.status(400).json({msg: "Please fill in all fields."})
@@ -30,7 +30,7 @@ const userCtrl = {
             const passwordHash = await bcrypt.hash(password, 12)
 
             const newUser = {
-                name, email, password: passwordHash
+                name, email, password: passwordHash,isTutor
             }
 
             const activation_token = createActivationToken(newUser)
@@ -54,17 +54,20 @@ const userCtrl = {
     ,
     activateEmail: async (req, res) => {
         try {
-            console.log('req.bodyreq.bodyreq.bodyreq.body',req)
+            
             const {activation_token} = req.body
+            
             const user = jwt.verify(activation_token, process.env.ACTIVATION_TOKEN_SECRET)
 
-            const {name, email, password} = user
+            const {name, email, password,isTutor} = user;
+
+            console.log('user',user);
 
             const check = await Users.findOne({email})
             if(check) return res.status(400).json({msg:"This email already exists."})
 
             const newUser = new Users({
-                name, email, password
+                name, email, password,isTutor
             })
 
             await newUser.save()
@@ -84,16 +87,17 @@ const userCtrl = {
             const isMatch = await bcrypt.compare(password, user.password)
             if(!isMatch) return res.status(400).json({msg: "Password is incorrect."})
 
-            const accessToken = jwt.sign (
-                {userId: user._id},
-                process.env.ACCESS_TOKEN_SECRET
-              );
+            const accessToken = createRefreshToken({id:user._id}) 
+            // jwt.sign (
+            //     {userId: user._id},
+            //     process.env.ACCESS_TOKEN_SECRET
+            //   );
               const value = {
                 id:user._id,
                 name: user.name,
                 email: user.email,
                 image: user.image,
-                isTurtor: user.isTurtor,
+                isTutor: user.isTutor,
               };
               res.json ({
                 success: true,
@@ -102,7 +106,7 @@ const userCtrl = {
                 user: value,
               });
         } catch (err) {
-            return res.status(500).json({msg: err.message})
+            return res.status(500).json({message:'That bai'})
         }
     },
     getAccessToken: (req, res) => {
@@ -326,7 +330,8 @@ const createAccessToken = (payload) => {
 }
 
 const createRefreshToken = (payload) => {
-    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '7d'})
+    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET)
+    // , {expiresIn: '7d'}
 }
 
 module.exports = userCtrl

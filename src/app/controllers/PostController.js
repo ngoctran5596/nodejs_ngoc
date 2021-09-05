@@ -6,17 +6,20 @@ class PostController {
   //[POST],/post/
   async create (req, res, next) {
     console.log("req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body",req.body);
-    console.log("req.file.file.file.file.file.body",req);
-      const {description,userId} = req.body;
+    console.log("req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body",req.file);
+    // console.log("req.file.file.file.file.file.body",req);
+      const {description,userId,typeClassId} = req.body;
 
-      if(req.file.filename){
+      if(req.file){
         const image =process.env.NEWFEED_URL+ req.file.filename;
         const postNew =  new Post({
           description,
           userId,
+          typeClassId,
           image
         });
-        postNew.save().then((data) => res.json(data))
+        postNew.save()
+        .then((data) => res.json(data))
         .catch((err) => {
           res.json(err);
         })
@@ -24,8 +27,11 @@ class PostController {
         const postNew =  new Post({
           description,
           userId,
+          typeClassId
         });
-        postNew.save().then((data) => res.json(data)) .catch((err) => {
+        postNew.save()
+        .then((data) => res.json(data)) 
+        .catch((err) => {
           res.json(err);
         })                                                                                                             
       }

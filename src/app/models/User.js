@@ -10,7 +10,7 @@ const UserSchema = new Schema (
       type: String,
       default: 'https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png',
     },
-    isTurtor: {
+    isTutor: {
       type: Boolean,
       default: false, // 0 = nguoi hoc, 1 = nguoi day
     },

@@ -55,6 +55,8 @@ class CoursesController {
       .then(() => res.redirect("back"))
       .catch(next)
   }
+
+  
 }
 
 module.exports = new CoursesController()

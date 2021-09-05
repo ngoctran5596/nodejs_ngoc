@@ -1,10 +1,8 @@
-var Courses = require ('../../models/Courses');
+var Document = require ('../../models/Document');
 
 exports.getAll = async function (req, res) {
-  const payload = await Courses.find ();
-  res.status (200).json ({
-    payload,
-  });
+  const payload = await Document.find ();
+  res.status (200).json (payload);
 };
 
 //[GET] , /courses/type/:id
@@ -12,26 +10,25 @@ exports.getAllCourseType = async function (req, res) {
   console.log ('req.params.id', req.params.id);
   const payload = await Courses.find ({
     courseType: req.params.id,
-  }).populate ('userId', 'name image')
-  .populate ('studentId', 'name image');
+  })
+    .populate ('userId', 'name image')
+    .populate ('studentId', 'name image');
   res.status (200).json ({
     payload,
   });
 };
 
-exports.getCourseByUserId = async function (req, res) {
+exports.getDocumentByCoureId = async function (req, res) {
   console.log ('req.params.id', req.params.id);
-  const payload = await Courses.find ({
-    userId: req.params.id,
+  await Document.find ({
+    courseId: req.params.id,
   }).populate ('userId', 'name image')
-  .populate ('studentId', 'name image');
-  res.status (200).json ({
-    payload,
-  });
+    .then (data => res.json (data))
+    .catch (err => res.json ({message: 'that bai'}));
 };
 exports.getById = async function (req, res) {
   try {
-    const payload = await Courses.find ({userId:req.params.id});
+    const payload = await Courses.findById (req.params.id);
 
     if (!payload) {
       res.status (404).json ({
@@ -87,33 +84,28 @@ exports.update = async function (req, res) {
 };
 
 exports.addStudent = async function (req, res) {
-
-    try {
-      const data = req.body.userId;
-      console.log(req.body.userId)
-      Courses.updateOne(
-        { _id: req.params.id },
-        { $push: { studentId: [data] } },
-        function(err, result) {
-          if (err) {
-            res.json({message:'thất bại'})
-          } else {
-            res.json({message:'thanh công'});
-            
-          }
+  try {
+    const data = req.body.userId;
+    console.log (req.body.userId);
+    Courses.updateOne (
+      {_id: req.params.id},
+      {$push: {studentId: [data]}},
+      function (err, result) {
+        if (err) {
+          res.json ({message: 'thất bại'});
+        } else {
+          res.json ({message: 'thanh công'});
         }
-      );
-   
-    } catch (error) {
-      res.json({message:'thất bại'})
-    }
-   
- 
+      }
+    );
+  } catch (error) {
+    res.json ({message: 'thất bại'});
+  }
 };
-exports.addCourse = async function (req, res) {
+exports.addDocument = async function (req, res) {
   const data = req.body;
   console.log ('data', data);
-  const course = new Courses (data);
+  const course = new Document (data);
   await course
     .save ()
     .then (() => res.json ({success: true, message: 'Tạo thành công'}))

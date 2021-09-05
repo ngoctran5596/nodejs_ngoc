@@ -7,12 +7,14 @@ const fileUpload = require ('express-fileupload');
 const cors = require ('cors');
 const exphbs = require ('express-handlebars');
 const postController = require ('./app/controllers/PostController');
+const userController = require ('./app/controllers/UserController');
+const auth = require ('./middlewares/auth');
 var methodOverride = require ('method-override');
 const User = require ('./app/models/User');
 const {addUser, loadMessage, saveMsg} = require ('./app/helpers/mics');
 const Messages = require ('./app/models/Message');
 const app = express ();
-const PORT =  process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 var bodyParser = require ('body-parser');
 app.use (bodyParser.urlencoded ({extended: false}));
 
@@ -29,6 +31,12 @@ var storage = multer.diskStorage ({
 });
 var upload = multer ({storage: storage});
 app.post ('/postImage', upload.single ('imagePost'), postController.create);
+app.post (
+  '/upload_avatar',
+  upload.single ('avatar'),
+  auth,
+  userController.updateUser
+);
 // app.post ('/postNoImage/app', upload.single ('imagePost'), postController.create);
 //import db
 const server = http.createServer (app);
@@ -40,6 +48,7 @@ const io = new Server (server, {
   },
 });
 const db = require ('./config/db');
+const {datacatalog} = require ('googleapis/build/src/apis/datacatalog');
 app.use (cookieParser ());
 app.use (
   fileUpload ({
@@ -80,6 +89,7 @@ io.on ('connection', async socket => {
   );
 
   socket.on ('joinTwoUsers', ({roomID}, cb) => {
+    console.log (roomID);
     socket.join (roomID);
     cb ({roomID});
   });
@@ -87,7 +97,6 @@ io.on ('connection', async socket => {
   loadMessage (socket);
 
   socket.on ('sendTouser', data => {
-    console.log ('DATATAT', data);
     socket.broadcast.to (data.roomID).emit ('dispatchMsg', {...data});
     const {
       roomID,
@@ -97,6 +106,26 @@ io.on ('connection', async socket => {
     } = data;
 
     new Messages ({roomID, senderEmail, recieverEmail, time, txtMsg}).save ();
+  });
+  socket.on ('joined', ({userName}) =>
+    socket.broadcast.emit ('joined', ` ${userName} joined the chat`)
+    // socket.emit ('joined', `Wellcome to Code Learn : ${userName} `)
+  );
+
+  socket.on ('chat message', ({chatroomId, userName, message}) => {
+    console.log (chatroomId, userName, message);
+    socket.broadcast.to(chatroomId).emit ('newMessage', {
+      message,
+      name: userName,
+    });
+    // io.to (data.roomID).emit ('chat message', data);
+    // socket.broadcast.to (data.roomID).emit ('dispatchCodeLearn', {...data});
+  });
+
+  
+  socket.on ('joinRoom', ({chatroomId}) => {
+    socket.join (chatroomId);
+    console.log ('A user joined chatroom: ' + chatroomId);
   });
 });
 //template engine
@@ -113,10 +142,13 @@ app.engine (
 );
 app.set ('view engine', 'hbs');
 app.set ('views', path.join (__dirname, 'resources', 'views'));
-// console.log(path.join(__dirname,'resources/views'));
+
 //routes khoi tao tuyen duong
 route (app);
 
-server.listen (PORT, function(){
-  console.log("Express server listening on "+PORT);
+// server.listen (PORT, function(){
+//   console.log("Express server listening on "+PORT);
+// });
+server.listen (3000, function () {
+  console.log ('Express server listening on ' + 3000);
 });

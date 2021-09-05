@@ -15,14 +15,13 @@ class UserController {
     res.render ('login-register-custom', {layout: false});
   }
   login (req, res) {
-   
     res.render ('login', {layout: false});
   }
 
   //[POST],/register
 
   async register (req, res, next) {
-    const {name, email, password, isTurtor, image} = req.body;
+    const {name, email, password, isTutor, image} = req.body;
     const emailRegex = /@gmail.com|@yahoo.com/;
 
     if (!emailRegex.test (email)) res.json ({error: 'Khong ho tro domain'});
@@ -39,7 +38,7 @@ class UserController {
         name,
         email,
         password: sha256 (password + process.env.SALT),
-        isTurtor,
+        isTutor,
         image,
       });
       await user.save ();
@@ -113,11 +112,31 @@ class UserController {
     }
   }
 
+  //UPDATE
+
+  async updateUser (req, res) {
+    try {
+      if (req.file) {
+        const image = process.env.NEWFEED_URL + req.file.filename;
+        await User.findOneAndUpdate (
+          {_id: req.user.id},
+          {
+            image,
+          }
+        );
+
+        res.json ({message:'updated successfully'});
+      }
+    } catch (err) {
+      return res.status (500).json ({msg: err.message});
+    }
+  }
+
   //[POST]/api/user
   async apiRegister (req, res, next) {
     try {
-      // isTurtor, image
-      const {name, email, password, isTurtor} = req.body;
+      // isTutor, image
+      const {name, email, password, isTutor} = req.body;
 
       const emailRegex = /@gmail.com|@yahoo.com/;
       if (!name || !email || !password)
@@ -142,7 +161,7 @@ class UserController {
         name,
         email,
         password: passwordHash,
-        isTurtor,
+        isTutor,
       });
 
       const activation_token = createActivationToken (newUser);
@@ -166,22 +185,18 @@ class UserController {
       );
       const {name, email, password} = user;
 
-
-      console.log('newUser',name, email, password)
+      console.log ('newUser', name, email, password);
       const check = await User.findOne ({email});
       if (check)
         return res.status (400).json ({msg: 'This email already exists.'});
 
-
       const newUser = new User ({
         name,
         email,
-        password
+        password,
       });
 
-     
-
-      await newUser.save();
+      await newUser.save ();
 
       res.json ({msg: 'Account has been activated!'});
     } catch (err) {

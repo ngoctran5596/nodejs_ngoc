@@ -1,12 +1,11 @@
 <div class='container'>
   <div class='row'>
     <div class='table-responsive'>
-      <h3>Post app</h3>
+      <h3>NewFeed app</h3>
       <table class='table table-bordered align-middle'>
         <thead>
           <tr>
             <th scope='col'>STT</th>
-            <th scope='col'>Title</th>
             <th scope='col'>Description</th>
             <th scope='col'>Image</th>
             <th scope='col'>Time</th>
@@ -17,7 +16,6 @@
           {{#each posts}}
           <tr>
             <th scope='row'>{{sum @index 1}}</th>
-            <td>{{this.title}}</td>
             <td>{{this.description}}</td>
             <td>{{this.image}}</td>
             <td>{{this.createdAt}}</td>

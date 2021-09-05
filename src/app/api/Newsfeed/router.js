@@ -1,6 +1,7 @@
 const express = require ('express');
 const router = express.Router ();
 const controller = require ('./controller');
+const auth = require('../../../middlewares/auth');
 
 var multer  = require('multer');
 var storage = multer.diskStorage({
@@ -26,7 +27,10 @@ var upload = multer({
 router
   .get ('/', controller.getAllPost)
   .get ('/:id', controller.getById)
+  .post ('/like/:id',auth, controller.like)
+  .post ('/updatePost/:id',auth,controller.updatePost)
   .post ('/:id', controller.addComment)
-  .post ('/like/:id', controller.like)
-  .post ('/create/created',upload.single('image'), controller.createPost);
+  .post ('/create/created',upload.single('image'), controller.createPost)
+  .delete ('/comment/:id', controller.deleteComment)
+  .delete ('/post/:id', controller.deletePost)
 module.exports = router; //exporst qua index.js để su dung
