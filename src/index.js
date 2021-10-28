@@ -146,9 +146,9 @@ app.set ('views', path.join (__dirname, 'resources', 'views'));
 //routes khoi tao tuyen duong
 route (app);
 
-// server.listen (PORT, function(){
-//   console.log("Express server listening on "+PORT);
-// });
-server.listen (3000, function () {
-  console.log ('Express server listening on ' + 3000);
+server.listen (PORT, function(){
+  console.log("Express server listening on "+PORT);
 });
+// server.listen (3000, function () {
+//   console.log ('Express server listening on ' + 3000);
+// });
