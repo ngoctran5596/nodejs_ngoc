@@ -26,6 +26,9 @@ class MeController {
     }))
     .catch(next);
   }
+  mp3App(req, res, next) {
+    res.render('mp3/music.hbs')
+  }
 }
 
 module.exports = new MeController ();

@@ -7,6 +7,7 @@ const meController = require('../app/controllers/MeController');
 router.get('/stored/courses',meController.storedCourses);
 router.get('/stored/user',meController.userApp);
 router.get('/stored/post',meController.postApp);
+router.get('/stored/mp3',meController.mp3App);
 
 
 module.exports = router;

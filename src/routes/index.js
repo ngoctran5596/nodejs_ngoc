@@ -29,6 +29,7 @@ function route (app) {
   app.use ('/courseType', courseType);
   app.use ('/home', sitesRouter);
   app.use ('/question', questionRouter);
+  // app.use ('/mp3', meRouter);
 
   // api
   // app.use('/api', require('./upload'))

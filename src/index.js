@@ -31,6 +31,7 @@ var storage = multer.diskStorage ({
 });
 var upload = multer ({storage: storage});
 app.post ('/postImage', upload.single ('imagePost'), postController.create);
+app.post ('/posttest', upload.single ('testmp3'), postController.postes);
 app.post (
   '/upload_avatar',
   upload.single ('avatar'),
@@ -107,6 +108,7 @@ io.on ('connection', async socket => {
 
     new Messages ({roomID, senderEmail, recieverEmail, time, txtMsg}).save ();
   });
+
   socket.on ('joined', ({userName}) =>
     socket.broadcast.emit ('joined', ` ${userName} joined the chat`)
     // socket.emit ('joined', `Wellcome to Code Learn : ${userName} `)

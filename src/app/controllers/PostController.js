@@ -39,6 +39,15 @@ class PostController {
   }
   //[GET],/post/
 
+    
+  async postes (req, res, next) {
+    console.log ('req.userId', req);
+    res.render('mp3/music.hbs',{
+      
+    })
+   
+  }
+
   async getById (req, res, next) {
     console.log ('req.userId', req.userId);
     try {
