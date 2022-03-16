@@ -17,6 +17,7 @@ const newsFeedApiRouter = require ('../app/api/Newsfeed/router');
 const documentRouter = require ('../app/api/Document/router');
 const GroupApiRouter = require ('../app/api/Group/router');
 const chatRoute = require ('./chat.route');
+const CityController = require('./city.route');
 
 //tập hợp các đường dẫn sau khi mình ấn locohost
 function route (app) {
@@ -43,6 +44,7 @@ function route (app) {
   app.use ('/api/note', noteApi);
   app.use ('/api/document', documentRouter);
   app.use ('/api/videoCall', videoCallRouter);
+  app.use ('/city', CityController);
 
   app.use (GroupApiRouter);
 }

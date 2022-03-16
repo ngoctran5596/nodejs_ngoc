@@ -1,4 +1,5 @@
 var Courses = require ('../../models/Courses');
+var Courses_learning = require ('../../models/CourseLearning/Courses');
 
 exports.getAll = async function (req, res) {
   const payload = await Courses.find ();
@@ -63,6 +64,9 @@ exports.store = async function (req, res) {
     console.log ('ERR', err);
   }
 };
+
+
+
 
 exports.update = async function (req, res) {
   try {
@@ -141,4 +145,33 @@ exports.delete = async function (req, res) {
       error: error.message,
     });
   }
+};
+
+
+
+
+
+
+
+// Courses_learning
+
+exports.course_learning = async function (req, res) {
+  const data = req.body;
+  data.thumbnail = `https://img.youtube.com/vi/${req.body.videoId}/sddefault.jpg`;
+  data.instructor = '620cb5a8e73d4728ac5a6c25';
+
+  const course = new Courses_learning (data);
+  try {
+    const payload = await course.save ();
+    res.status (200).json ({payload});
+  } catch (error) {
+    console.log ('ERR', error);
+  }
+};
+
+exports.getAllCourseLearning = async function (req, res) {
+  const payload = await Courses_learning.find ().populate ({ path: 'instructor', select: 'name image' });
+  res.status (200).json ({
+    payload,
+  });
 };

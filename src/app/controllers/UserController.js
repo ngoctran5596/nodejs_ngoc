@@ -1,98 +1,102 @@
-const User = require ('../models/User');
-const sendMail = require ('./UserFull');
-const {mongooseToObject} = require ('../../util/mongoose');
-const bcrypt = require ('bcrypt');
+const User = require('../models/User');
+const sendMail = require('./UserFull');
+const { mongooseToObject } = require('../../util/mongoose');
+const bcrypt = require('bcrypt');
 
-const sha256 = require ('js-sha256');
-const jwt = require ('jsonwebtoken');
-const slug = require ('mongoose-slug-generator');
+const sha256 = require('js-sha256');
+const jwt = require('jsonwebtoken');
+const slug = require('mongoose-slug-generator');
 
-const {CLIENT_URL} = process.env;
+const { CLIENT_URL } = process.env;
 
 class UserController {
   //[GET],/
-  dangky (req, res) {
-    res.render ('login-register-custom', {layout: false});
+  dangky(req, res) {
+    res.render('login-register-custom', { layout: false });
   }
-  login (req, res) {
-    res.render ('login', {layout: false});
+  login(req, res) {
+    res.render('login', { layout: false });
   }
 
   //[POST],/register
-
-  async register (req, res, next) {
-    const {name, email, password, isTutor, image} = req.body;
-    const emailRegex = /@gmail.com|@yahoo.com/;
-
-    if (!emailRegex.test (email)) res.json ({error: 'Khong ho tro domain'});
-
-    if (password.length < 6) res.json ({error: 'Pass chứa 6 ký tự'});
-
-    try {
-      const checkExits = await User.findOne ({
-        email: email,
-      });
-      if (checkExits) return res.json ({error: 'Trùng Mail rồi bạn'});
-
-      const user = new User ({
-        name,
-        email,
-        password: sha256 (password + process.env.SALT),
-        isTutor,
-        image,
-      });
-      await user.save ();
-      const accessToken = jwt.sign (
-        {userId: user._id},
-        process.env.ACCESS_TOKEN_SECRET
-      );
-      // res.json ({success: true, message: 'success', accessToken});
-      res.redirect ('/home');
-    } catch (error) {
-      console.log ('ERRRRRORRR', error);
-    }
+  validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
   }
+  // async register(req, res, next) {
+  //   console.log(req.body)
+  //   const { name, email, password, isTutor, image } = req.body;
+  //   const emailRegex = /@gmail.com|@yahoo.com/;
+
+  //   if (!validateEmail(email))
+  //     return res.status(400).json({ msg: "Invalid emails." })
+
+  //   if (password.length < 6) res.json({ error: 'Pass chứa 6 ký tự' });
+
+  //   try {
+  //     const user = await Users.findOne({ email })
+
+  //     if (checkExits) return res.json({ error: 'Trùng Mail rồi bạn' });
+
+  //     const user = new User({
+  //       name,
+  //       email,
+  //       password: sha256(password + process.env.SALT),
+  //       isTutor,
+  //       image,
+  //     });
+  //     await user.save();
+  //     const accessToken = jwt.sign(
+  //       { userId: user._id },
+  //       process.env.ACCESS_TOKEN_SECRET
+  //     );
+  //     // res.json ({success: true, message: 'success', accessToken});
+  //     res.redirect('/home');
+  //   } catch (error) {
+  //     console.log('ERRRRRORRR', error);
+  //   }
+  // }
 
   //[POST]/login
 
-  async loginStore (req, res) {
-    const {email, password} = req.body;
+  async loginStore(req, res) {
+    console.log(req.body)
+    const { email, password } = req.body;
 
     if (!email || !password)
       return res
-        .status (400)
-        .json ({success: false, message: 'Sai mail hoặc mật khẩu'});
+        .status(400)
+        .json({ success: false, message: 'Sai mail hoặc mật khẩu' });
 
-    const user = await User.findOne ({
-      email: email,
-      password: sha256 (password + process.env.SALT),
-    });
+    const user = await User.findOne({email});
 
+    const isMatch = await bcrypt.compare(password, user.password)
+    if(!isMatch) return res.status(400).json({msg: "Password is incorrect."})
     if (!user)
-      return res.json ({success: false, message: 'Sai mail hoặc mật khẩu'});
+      return res.json({ success: false, message: 'Sai mail hoặc mật khẩu' });
 
-    res.redirect ('./home');
+    res.redirect('./home');
   }
 
-  delete (req, res, next) {
-    User.deleteOne ({_id: req.params.id})
-      .then (() => res.redirect ('back'))
-      .catch (next);
+  delete(req, res, next) {
+    User.deleteOne({ _id: req.params.id })
+      .then(() => res.redirect('back'))
+      .catch(next);
   }
 
   //[POST]/api/user
-  async apiLogin (req, res) {
-    const {email, password} = req.body;
-    const user = await User.findOne ({
+  async apiLogin(req, res) {
+    const { email, password } = req.body;
+    const user = await User.findOne({
       email: email,
-      password: sha256 (password + process.env.SALT),
+      password: sha256(password + process.env.SALT),
     });
     try {
       if (!user) {
-        res.json ({success: false, message: 'Sai mail hoặc mật khẩu'});
+        res.json({ success: false, message: 'Sai mail hoặc mật khẩu' });
       } else {
-        const accessToken = jwt.sign (
-          {userId: user._id},
+        const accessToken = jwt.sign(
+          { userId: user._id },
           process.env.ACCESS_TOKEN_SECRET
         );
         const value = {
@@ -100,7 +104,7 @@ class UserController {
           email: user.email,
           image: user.image,
         };
-        res.json ({
+        res.json({
           success: true,
           message: 'success',
           accessToken,
@@ -108,104 +112,104 @@ class UserController {
         });
       }
     } catch (error) {
-      res.json ({success: false, message: 'Lỗi server'});
+      res.json({ success: false, message: 'Lỗi server' });
     }
   }
 
   //UPDATE
 
-  async updateUser (req, res) {
+  async updateUser(req, res) {
     try {
       if (req.file) {
         const image = process.env.NEWFEED_URL + req.file.filename;
-        await User.findOneAndUpdate (
-          {_id: req.user.id},
+        await User.findOneAndUpdate(
+          { _id: req.user.id },
           {
             image,
           }
         );
 
-        res.json ({message:'updated successfully'});
+        res.json({ message: 'updated successfully' });
       }
     } catch (err) {
-      return res.status (500).json ({msg: err.message});
+      return res.status(500).json({ msg: err.message });
     }
   }
 
   //[POST]/api/user
-  async apiRegister (req, res, next) {
+  async apiRegister(req, res, next) {
     try {
       // isTutor, image
-      const {name, email, password, isTutor} = req.body;
+      const { name, email, password, isTutor } = req.body;
 
       const emailRegex = /@gmail.com|@yahoo.com/;
       if (!name || !email || !password)
-        return res.status (400).json ({message: 'Please fill in all feids.'});
+        return res.status(400).json({ message: 'Please fill in all feids.' });
 
-      if (!emailRegex.test (email))
-        return res.status (400).json ({error: 'Invalid email'});
+      if (!emailRegex.test(email))
+        return res.status(400).json({ error: 'Invalid email' });
 
-      const checkExits = await User.findOne ({
+      const checkExits = await User.findOne({
         email: email,
       });
 
-      if (checkExits) return res.json ({error: 'This email already exists.'});
+      if (checkExits) return res.json({ error: 'This email already exists.' });
 
       if (password.length < 6)
         return res
-          .status (400)
-          .json ({error: 'Password must be at least 6 characters.'});
+          .status(400)
+          .json({ error: 'Password must be at least 6 characters.' });
 
-      const passwordHash = await bcrypt.hash (password, 12);
-      const newUser = new User ({
+      const passwordHash = await bcrypt.hash(password, 12);
+      const newUser = new User({
         name,
         email,
         password: passwordHash,
         isTutor,
       });
 
-      const activation_token = createActivationToken (newUser);
+      const activation_token = createActivationToken(newUser);
       const url = `${CLIENT_URL}/user/activate/${activation_token}`;
-      sendMail (email, url);
+      sendMail(email, url);
 
-      res.json ({
+      res.json({
         msg: 'Register Success! Please activate your email to start.',
       });
     } catch (error) {
-      return res.status (500).json ({msg: error.message});
+      return res.status(500).json({ msg: error.message });
     }
   }
 
-  async activateEmail (req, res) {
+  async activateEmail(req, res) {
     try {
-      const {activation_token} = req.body;
-      const user = jwt.verify (
+      const { activation_token } = req.body;
+      const user = jwt.verify(
         activation_token,
         process.env.ACTIVATION_TOKEN_SECRET
       );
-      const {name, email, password} = user;
+      const { name, email, password } = user;
 
-      console.log ('newUser', name, email, password);
-      const check = await User.findOne ({email});
+      console.log('newUser', name, email, password);
+      const check = await User.findOne({ email });
       if (check)
-        return res.status (400).json ({msg: 'This email already exists.'});
+        return res.status(400).json({ msg: 'This email already exists.' });
 
-      const newUser = new User ({
+      const newUser = new User({
         name,
         email,
         password,
       });
 
-      await newUser.save ();
+      await newUser.save();
 
-      res.json ({msg: 'Account has been activated!'});
+      res.json({ msg: 'Account has been activated!' });
     } catch (err) {
-      return res.status (500).json ({msg: err.message});
+      return res.status(500).json({ msg: err.message });
     }
   }
 }
 
-module.exports = new UserController ();
+module.exports = new UserController();
 
 //export thu gi thi nhan duoc thu do
 // const newController = require('./NewsController')
@@ -216,20 +220,20 @@ module.exports = new UserController ();
 //PUT CHỉnh sửa hẳn 1 document PATCH thì chỉnh sửa từng fill
 
 const createActivationToken = payload => {
-  return jwt.sign (payload.toJSON (), process.env.ACTIVATION_TOKEN_SECRET, {
+  return jwt.sign(payload.toJSON(), process.env.ACTIVATION_TOKEN_SECRET, {
     expiresIn: '5m',
   });
 };
 const createAccessToken = payload => {
-  return jwt.sign (payload, process.env.ACCESS_TOKEN_SECRET, {
+  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: '15m',
   });
 };
 
 const createRefreshToken = payload => {
-  return jwt.sign (payload, process.env.REFRESH_TOKEN_SECRET, {
+  return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
     expiresIn: '7d',
   });
 };
 
-module.exports = new UserController ();
+module.exports = new UserController();

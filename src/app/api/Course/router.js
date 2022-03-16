@@ -4,10 +4,12 @@ const controller = require("./controller")
 
 router
   .get("/", controller.getAll)
+  .get("/learning", controller.getAllCourseLearning)
   .get("/:id", controller.getById)
   .get("/type/:id", controller.getAllCourseType)
   .get("/userId/:id", controller.getCourseByUserId)
   .post("/", controller.store)
+  .post("/addCourseLearning", controller.course_learning)
   .post("/addCourse", controller.addCourse)
   .put("/:id", controller.update)
   .put("/addStudent/:id", controller.addStudent)

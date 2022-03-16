@@ -14,7 +14,7 @@ const User = require ('./app/models/User');
 const {addUser, loadMessage, saveMsg} = require ('./app/helpers/mics');
 const Messages = require ('./app/models/Message');
 const app = express ();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 var bodyParser = require ('body-parser');
 app.use (bodyParser.urlencoded ({extended: false}));
 
@@ -149,7 +149,7 @@ app.set ('views', path.join (__dirname, 'resources', 'views'));
 route (app);
 
 app.listen (PORT, function(){
-  console.log("Express server listening on "+PORT);
+  // console.log("Express server listening on "+PORT);
 });
 // server.listen (3000, function () {
 //   console.log ('Express server listening on ' + 3000);

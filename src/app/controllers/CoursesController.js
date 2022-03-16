@@ -30,6 +30,8 @@ class CoursesController {
         console.log("ERR", err)
       })
   }
+
+  
   //[GET],/courses/:id/edit
   edit(req, res, next) {
     Courses.findById(req.params.id)

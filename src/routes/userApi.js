@@ -8,7 +8,7 @@ const auth = require('../middlewares/auth')
 router.get('/user',UserController.getUserInfor);
 router.get('/:id',UserController.show);
 router.get('/infor/v3',auth,UserController.getUserInfor);
-router.get('/all/Users',UserController.getUsersAllInfor);
+router.get('/all/user',UserController.getUsersAllInfor);
 router.get('/reset/resetWeb/:id', UserController.resetWeb)
 router.post('/register',UserController.register);
 router.post('/activation',UserController.activateEmail);

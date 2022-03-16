@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken')
 const sendMail = require('./sendMail')
 const {google} = require('googleapis')
 const {OAuth2} = google.auth
-const fetch = require('node-fetch')
+const fetch = require('node-fetch');
+var nodemailer = require('nodemailer');
 
 const client = new OAuth2(process.env.MAILING_SERVICE_CLIENT_ID)
 
@@ -37,7 +38,7 @@ const userCtrl = {
 
             const url = `${CLIENT_URL}/api/user/${activation_token}`
             sendMail(email, url,'Xác nhận email')
-            res.json({msg: "Register Success! Please activate your email to start."})
+            res.json({data: `${CLIENT_URL}/api/user/${activation_token}`})
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
@@ -99,7 +100,7 @@ const userCtrl = {
                 image: user.image,
                 isTutor: user.isTutor,
               };
-              res.json ({
+              res.status(200).json ({
                 success: true,
                 message: 'success',
                 accessToken,
