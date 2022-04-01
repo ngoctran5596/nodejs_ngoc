@@ -104,7 +104,8 @@ exports.addStudent = async function (req, res) {
 };
 exports.addDocument = async function (req, res) {
   const data = req.body;
-  console.log ('data', data);
+  const data2 = req.files;
+  console.log ('data', data2);
   const course = new Document (data);
   await course
     .save ()

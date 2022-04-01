@@ -7,7 +7,7 @@ const CourseLearning = new Schema(
     title: { type: String },
     instructor: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
-    students: [{ type: mongoose.Schema.Types.ObjectId, ref: "Student" }],
+    students: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     discussions: { type: mongoose.Schema.Types.ObjectId, ref: "Discussions" },
     duration: { type: String },
     ratings: { type: Number },

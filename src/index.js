@@ -5,22 +5,26 @@ const path = require ('path');
 const cookieParser = require ('cookie-parser');
 const fileUpload = require ('express-fileupload');
 const cors = require ('cors');
+const db = require ('./config/db');
 const exphbs = require ('express-handlebars');
 const postController = require ('./app/controllers/PostController');
 const userController = require ('./app/controllers/UserController');
 const auth = require ('./middlewares/auth');
 var methodOverride = require ('method-override');
+var multer = require ('multer');
 const User = require ('./app/models/User');
 const {addUser, loadMessage, saveMsg} = require ('./app/helpers/mics');
 const Messages = require ('./app/models/Message');
 const app = express ();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
+const server = http.createServer (app);
+const {Server} = require ('socket.io');
 var bodyParser = require ('body-parser');
 app.use (bodyParser.urlencoded ({extended: false}));
 
 const route = require ('./routes');
 // var upload = multer({ dest: 'uploads/' })
-var multer = require ('multer');
+
 var storage = multer.diskStorage ({
   destination: function (req, file, cb) {
     cb (null, 'src/public/imageNewFeed');
@@ -29,6 +33,7 @@ var storage = multer.diskStorage ({
     cb (null, Date.now () + '-' + file.originalname);
   },
 });
+
 var upload = multer ({storage: storage});
 app.post ('/postImage', upload.single ('imagePost'), postController.create);
 app.post ('/posttest', upload.single ('testmp3'), postController.postes);
@@ -40,16 +45,15 @@ app.post (
 );
 // app.post ('/postNoImage/app', upload.single ('imagePost'), postController.create);
 //import db
-const server = http.createServer (app);
-const {Server} = require ('socket.io');
+
 app.use (cors ());
 const io = new Server (server, {
   cors: {
     origin: '*',
   },
 });
-const db = require ('./config/db');
-const {datacatalog} = require ('googleapis/build/src/apis/datacatalog');
+
+
 app.use (cookieParser ());
 app.use (
   fileUpload ({
@@ -148,9 +152,7 @@ app.set ('views', path.join (__dirname, 'resources', 'views'));
 //routes khoi tao tuyen duong
 route (app);
 
-app.listen (PORT, function(){
-  console.log("Express server listening on "+PORT);
+
+server.listen (PORT, function () {
+  console.log ('Express server listening on ' + PORT);
 });
-// server.listen (3000, function () {
-//   console.log ('Express server listening on ' + 3000);
-// });
