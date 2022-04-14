@@ -7,6 +7,7 @@ const sitesRouter = require ('./site.js');
 const questionRouter = require ('./question');
 const postRouter = require ('./post');
 const userApi = require ('./userApi');
+const codeZRoute = require ('./courses.code.z');
 const noteApi = require ('./note');
 const videoCallRouter = require ('./videocall');
 const courseType = require ('./courseType');
@@ -20,7 +21,8 @@ const chatRoute = require ('./chat.route');
 const CityController = require('./city.route');
 
 //tập hợp các đường dẫn sau khi mình ấn locohost
-function route (app) {
+function route (app,upload) {
+ 
   app.use ('/news', newsRouter);
   // app.use("/user", userRouter);
   app.use ('/', userRouter);
@@ -35,6 +37,7 @@ function route (app) {
   // api
   // app.use('/api', require('./upload'))
   app.use ('/post', postRouter);
+  app.use ('/codez', codeZRoute);
   app.use ('/api/user', userApi);
   app.use ('/api/questions', questionApiRouter);
   app.use ('/api/courses', courseApiRouter);

@@ -10,7 +10,7 @@ exports.getAll = async function (req, res) {
 
 //[GET] , /courses/type/:id
 exports.getAllCourseType = async function (req, res) {
-  console.log ('req.params.id', req.params.id);
+ 
   const payload = await Courses.find ({
     courseType: req.params.id,
   }).populate ('userId', 'name image')
@@ -21,7 +21,7 @@ exports.getAllCourseType = async function (req, res) {
 };
 
 exports.getCourseByUserId = async function (req, res) {
-  console.log ('req.params.id', req.params.id);
+  
   const payload = await Courses.find ({
     userId: req.params.id,
   }).populate ('userId', 'name image')
@@ -61,7 +61,7 @@ exports.store = async function (req, res) {
 
     res.status (200).json ({payload});
   } catch (error) {
-    console.log ('ERR', err);
+    res.status (500).json (error);
   }
 };
 
@@ -94,7 +94,6 @@ exports.addStudent = async function (req, res) {
 
     try {
       const data = req.body.userId;
-      console.log(req.body.userId)
       Courses.updateOne(
         { _id: req.params.id },
         { $push: { studentId: [data] } },
@@ -116,7 +115,6 @@ exports.addStudent = async function (req, res) {
 };
 exports.addCourse = async function (req, res) {
   const data = req.body;
-  console.log ('data', data);
   const course = new Courses (data);
   await course
     .save ()

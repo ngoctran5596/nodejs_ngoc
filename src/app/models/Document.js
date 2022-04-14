@@ -5,8 +5,9 @@ const Schema = mongoose.Schema;
 const Document = new Schema(
   {
     description: { type: String },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref:"User"  },
-    courseId: { type: mongoose.Schema.Types.ObjectId, ref:"courses"},
+    userId: { type: mongoose.Schema.Types.ObjectId, ref:"User",required: true  },
+    courseId: { type: mongoose.Schema.Types.ObjectId, ref:"courses",required: true},
+    file: { type: String},
     
   },
   {

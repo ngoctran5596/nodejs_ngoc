@@ -5,9 +5,9 @@ const UserController = require('../app/controllers/UserFull');
 
 const auth = require('../middlewares/auth')
 
-router.get('/user',UserController.getUserInfor);
+router.get('/user',UserController.getUserInfo);
 router.get('/:id',UserController.show);
-router.get('/infor/v3',auth,UserController.getUserInfor);
+router.get('/info/v3',auth,UserController.getUserInfo);
 router.get('/all/user',UserController.getUsersAllInfor);
 router.get('/reset/resetWeb/:id', UserController.resetWeb)
 router.post('/register',UserController.register);

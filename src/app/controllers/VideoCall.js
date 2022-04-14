@@ -8,7 +8,6 @@ var role = RtcRole.PUBLISHER
 class VideoCallController {
 
  generateRtcToken (req, resp) {
-   console.log(req.body);
     var currentTimestamp = Math.floor(Date.now() / 1000)
     var privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds
     var channelName = req.body.channelName;

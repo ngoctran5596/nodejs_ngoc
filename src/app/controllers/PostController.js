@@ -5,9 +5,6 @@ const {json} = require ('express');
 class PostController {
   //[POST],/post/
   async create (req, res, next) {
-    console.log("req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body",req.body);
-    console.log("req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body",req.file);
-    // console.log("req.file.file.file.file.file.body",req);
       const {description,userId,typeClassId} = req.body;
 
       if(req.file){
@@ -41,7 +38,6 @@ class PostController {
 
     
   async postes (req, res, next) {
-    console.log ('req.userId', req);
     res.render('mp3/music.hbs',{
       
     })
@@ -49,7 +45,6 @@ class PostController {
   }
 
   async getById (req, res, next) {
-    console.log ('req.userId', req.userId);
     try {
       const post = await Post.find ({userId: req.userId}).populate ('userId');
       res.json ({success: true, post});
@@ -72,8 +67,6 @@ class PostController {
 
   async update (req, res, next) {
     const {title, description, image} = req.body;
-
-    console.log (req.userId);
     if (!title)
       return res
         .status (400)

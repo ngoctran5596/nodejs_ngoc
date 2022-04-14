@@ -24,7 +24,6 @@ class UserController {
     return re.test(email);
   }
   // async register(req, res, next) {
-  //   console.log(req.body)
   //   const { name, email, password, isTutor, image } = req.body;
   //   const emailRegex = /@gmail.com|@yahoo.com/;
 
@@ -60,7 +59,7 @@ class UserController {
   //[POST]/login
 
   async loginStore(req, res) {
-    console.log(req.body)
+
     const { email, password } = req.body;
 
     if (!email || !password)
@@ -188,8 +187,6 @@ class UserController {
         process.env.ACTIVATION_TOKEN_SECRET
       );
       const { name, email, password } = user;
-
-      console.log('newUser', name, email, password);
       const check = await User.findOne({ email });
       if (check)
         return res.status(400).json({ msg: 'This email already exists.' });

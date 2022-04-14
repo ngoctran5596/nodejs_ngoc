@@ -12,7 +12,7 @@ const CourseLearning = new Schema(
     duration: { type: String },
     ratings: { type: Number },
     price: { type: String },
-    is_favorite: { type: Boolean },
+    is_favorite:  [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     thumbnail: { type: String }
   },
   {

@@ -7,7 +7,6 @@ class NoteController {
   // idYoutube: { type: String},
   //[POST],/post/
   async createNote (req, res, next) {
-    console.log(req.body)
     const {description, userId, idYoutube,nameClass} = req.body;
 
     const payload = new Note ({description, userId, idYoutube,nameClass});
@@ -19,7 +18,6 @@ class NoteController {
   //[GET],/post/
 
   async getByIdNote (req, res, next) {
-    console.log ('req.userId', req.params);
     try {
       const note = await Note.find ({userId:req.params.id});
       res.json (note);

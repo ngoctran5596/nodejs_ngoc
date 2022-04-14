@@ -38,7 +38,6 @@ class CityController {
   //[POST],/courses/store
   create(req, res, next) {
     const data = req.body
-    console.log("reqqqqqqqqqq", req)
     for (let i = 0; i < 50; i++) {
       const city = new City(data)
       city

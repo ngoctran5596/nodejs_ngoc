@@ -7,7 +7,7 @@ exports.getAll = async function (req, res) {
 
 //[GET] , /courses/type/:id
 exports.getAllCourseType = async function (req, res) {
-  console.log ('req.params.id', req.params.id);
+
   const payload = await Courses.find ({
     courseType: req.params.id,
   })
@@ -19,7 +19,7 @@ exports.getAllCourseType = async function (req, res) {
 };
 
 exports.getDocumentByCoureId = async function (req, res) {
-  console.log ('req.params.id', req.params.id);
+
   await Document.find ({
     courseId: req.params.id,
   }).populate ('userId', 'name image')
@@ -86,7 +86,7 @@ exports.update = async function (req, res) {
 exports.addStudent = async function (req, res) {
   try {
     const data = req.body.userId;
-    console.log (req.body.userId);
+
     Courses.updateOne (
       {_id: req.params.id},
       {$push: {studentId: [data]}},
@@ -103,16 +103,33 @@ exports.addStudent = async function (req, res) {
   }
 };
 exports.addDocument = async function (req, res) {
-  const data = req.body;
-  const data2 = req.files;
-  console.log ('data', data2);
-  const course = new Document (data);
-  await course
-    .save ()
-    .then (() => res.json ({success: true, message: 'Tạo thành công'}))
-    .catch (err => {
-      res.json ({success: false, message: 'Tạo thất bại'});
+  const { description, userId, courseId} = req.body;
+  if(req.file){
+    const file =process.env.NEWFEED_URL+ req.file.filename;
+    const document =  new Document({
+      description,
+      userId,
+      courseId,
+      file
     });
+    document.save()
+    .then((data) => res.json ({success: true, message: 'Tạo thành công'}))
+    .catch((err) => {
+      res.json ({success: false, message: 'Tạo thất bại'});
+    })
+  }else{
+    const document =  new Document({
+      description,
+      userId,
+      courseId,
+    });
+    document.save()
+    .then((data) => res.json ({success: true, message: 'Tạo thành công'}))
+    .catch((err) => {
+      res.json ({success: false, message: 'Tạo thất bại'});
+    })                                                                                                             
+  }
+  
 };
 
 exports.delete = async function (req, res) {

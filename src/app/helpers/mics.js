@@ -45,14 +45,12 @@ const addUser = ({ recieverEmail, senderEmail }, socket) => {
 const loadMessage =(socket)=>{
     socket.on("sentMsgs",({roomID},cb)=>{
         Messages.find({roomID:roomID}).then((msgs)=>{
-            console.log(msgs);
             if(!msgs) return cb(null);
             return cb(msgs);
         });
     });
 }
 const saveMsg =(data,socket)=>{
-    console.log('aaaaaaaaaaaaaaaaa',data);
    
 }
 module.exports = { addUser,loadMessage,saveMsg };

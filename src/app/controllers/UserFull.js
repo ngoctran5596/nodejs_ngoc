@@ -15,7 +15,7 @@ const userCtrl = {
     register: async (req, res) => {
         try {
             const {name, email, password,isTutor} = req.body
-            
+         
             if(!name || !email || !password)
                 return res.status(400).json({msg: "Please fill in all fields."})
 
@@ -40,16 +40,16 @@ const userCtrl = {
             sendMail(email, url,'Xác nhận email')
             res.json({data: `${CLIENT_URL}/api/user/${activation_token}`})
         } catch (err) {
-            return res.status(500).json({msg: err.message})
+            return res.status(500).json({msg: "lỗi không biết"})
         }
     },
     show: async (req, res)=> {
-        console.log(req.params);      
+        
         res.render ('email/confirm', {layout: false,acessToken:req.params});
       }
     ,
     resetWeb: async (req, res)=> {
-        console.log(req.params);      
+ 
         res.render ('email/resetPass', {layout: false,acessToken:req.params});
       }
     ,
@@ -62,7 +62,7 @@ const userCtrl = {
 
             const {name, email, password,isTutor} = user;
 
-            console.log('user',user);
+
 
             const check = await Users.findOne({email})
             if(check) return res.status(400).json({msg:"This email already exists."})
@@ -143,7 +143,6 @@ const userCtrl = {
     resetPassword: async (req, res) => {
         try {
             const {password} = req.body
-            console.log(password)
             const passwordHash = await bcrypt.hash(password, 12)
             await Users.findOneAndUpdate({_id: req.user.id}, {
                 password: passwordHash
@@ -153,10 +152,10 @@ const userCtrl = {
             return res.status(500).json({msg: err.message})
         }
     },
-    getUserInfor: async (req, res) => {
+    getUserInfo: async (req, res) => {
         try {
             const user = await Users.findById(req.user.id).select('-password')
-            res.json(user)
+            return res.status(200).json(user)
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
