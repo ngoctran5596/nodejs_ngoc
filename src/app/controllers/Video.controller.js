@@ -49,12 +49,16 @@ class VideoController {
         try {
             const videoId = req.query.id;
             const userId = req?.user?.id;
-            await Video.findOneAndUpdate(
-                { _id: videoId },
-                { $push: { is_complete: userId } })
-                .then(() => res.json({ message: 'thanh cong' }));
-
-
+            const video_result = await Video.findById({ _id: videoId })
+            const check_video = video_result.is_complete.find((i) => i == userId);
+            if (check_video) {
+                res.json({message:'Seen video'})
+            } else {
+                await Video.findOneAndUpdate(
+                    { _id: videoId },
+                    { $push: { is_complete: userId } })
+                    .then(() => res.json({ message: 'Success' }));
+            }
         } catch (error) {
             res.json({ error: error });
         }

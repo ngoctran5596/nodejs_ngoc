@@ -8,5 +8,6 @@ const authMiddleware = require('../middlewares/auth');
 router.get('/',courseController.show);
 router.post('/create',authMiddleware,courseController.create);
 router.post('/iscomplete',authMiddleware,videoController.is_complete_ById);
+router.post('/addstudent',authMiddleware,courseController.addstudent);
 
 module.exports = router;

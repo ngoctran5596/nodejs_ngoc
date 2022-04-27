@@ -4,7 +4,7 @@ const { mongooseToObject } = require("../../../util/mongoose")
 class CoursesCodeZController {
   //[GET],/codez
   show(req, res) {
-    Courses.find().populate('instructor','name email image').populate('videos',{})
+    Courses.find().populate('instructor', 'name email image').populate('videos', {})
       .then((course) => {
         res.json(course)
       })
@@ -40,12 +40,21 @@ class CoursesCodeZController {
       })
       .catch(next)
   }
-  //[PUT],/courses/:id
-  update(req, res, next) {
-    const data = req.body
-    Courses.updateOne({ _id: req.params.id }, data)
-      .then((rs) => res.json(rs))
-      .catch(next)
+  //[PUT],/codez/addstudent?id=id
+  async addstudent(req, res, next) {
+    try {
+      const courseId = req.query.id;
+      const userId = req?.user?.id;
+      Courses.findOneAndUpdate(
+        { _id: courseId },
+        { $push: { students: userId } })
+        .then(() => res.json({ message: 'Success' }));
+    } catch (error) {
+      console.log('Error add Student')
+    }
+
+
+
   }
   //[DELETE],/courses/:id
   delete(req, res, next) {
